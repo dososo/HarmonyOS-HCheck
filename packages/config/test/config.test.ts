@@ -357,3 +357,17 @@ test("仓库示例配置通过加载和 Schema 校验", async () => {
   assert.equal(config.project.platform, "harmonyos");
   assert.deepEqual(config.report.formats, ["terminal", "json"]);
 });
+
+test("根目录简化配置可作为默认配置覆盖层加载", async () => {
+  const repositoryRoot = join(import.meta.dirname, "../../..");
+  const config = await loadConfig({
+    projectRoot: repositoryRoot,
+    explicitConfig: ".hcheck.example.yml",
+    environment: {},
+  });
+
+  assert.equal(config.scan.fail_on, "blocker");
+  assert.equal(config.scan.minimum_confidence, "probable");
+  assert.equal(config.agc.enabled, false);
+  assert.equal(config.runtime.upload_source, false);
+});

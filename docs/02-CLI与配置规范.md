@@ -42,4 +42,4 @@ hcheck explain HOS-PERM-001 --format json
 
 ## 配置原则
 
-参考 [.hcheck.example.yml](../.hcheck.example.yml) 与 [examples/hcheck.yml](../examples/hcheck.yml)。配置中的凭据字段只能引用环境变量名，不能写入实际凭据。运行产物、缓存、报告与本地证据都应存放在 `.hcheck/`，该目录默认不会被 Git 跟踪。
+根目录的 [.hcheck.example.yml](../.hcheck.example.yml) 是可复制到目标工程根目录并改名为 `.hcheck.yml` 的简化覆盖示例；它会与内置安全默认值合并。 [examples/hcheck.yml](../examples/hcheck.yml) 则是完整 Schema 样例。`--config <文件>` 的相对路径以目标工程根目录为准，跨目录使用时请传入绝对路径。配置中的凭据字段只能引用环境变量名，不能写入实际凭据。运行产物、缓存、报告与本地证据都应存放在 `.hcheck/`，该目录默认不会被 Git 跟踪。
