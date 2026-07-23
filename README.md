@@ -46,6 +46,38 @@ node packages/cli/dist/index.js package inspect <本地-HAP-或-APP-路径> --fo
 
 `fixtures/` 中全部输入都是公开、非生产的测试样例。将命令指向自己的工程或软件包前，请先阅读 [安全与数据处理说明](docs/11-安全隐私与凭证.md)。
 
+## 可复现的真实输出
+
+![HCheck 真实命令输出展示：左侧为预期的权限 BLOCKER，右侧为干净 fixture 通过门禁](docs/assets/cli-real-run.png)
+
+上图基于本仓库公开 fixture 的实际 CLI 输出排版：左侧命令返回 `exit 1`，并报告 `HOS-PERM-001`；右侧命令返回 `exit 0`，且没有 Finding。它是对真实文本输出的静态展示图，不是终端、设备或 AGC 截图；可查看 [输出源文件](docs/assets/real-run-output.html)，或直接运行以下命令独立复验：
+
+```bash
+pnpm build
+node packages/cli/dist/index.js scan fixtures/missing-permission --format terminal --fail-on high --confidence probable
+node packages/cli/dist/index.js scan fixtures/clean-stage-app --format terminal
+```
+
+## 非生产外部环境验证记录
+
+为保持证据边界，以下截图记录发布流程中在非生产 AppGallery Connect 项目内使用官方云测服务的环境操作与结果。它们不是 HCheck CLI 的扫描输出，也不代表华为或 AppGallery Connect 对本项目的背书；图中账号信息已打码。
+
+### 云测入口与连通性预检
+
+<p align="center">
+  <img src="docs/assets/external-verification/agc-cloudtest-preflight.png" alt="非生产 AppGallery Connect 项目中的云测试入口与连通性预检记录，账号信息已打码" width="960" />
+</p>
+
+在非生产项目中进入“云测试”服务前，先完成仅限指定华为云 CDN 域名的连通性排查与恢复，再打开对应的官方服务入口。该记录说明外部环境曾被明确预检；它不包含源码上传、生产账号、生产签名材料或设备写操作。
+
+### 兼容性测试汇总
+
+<p align="center">
+  <img src="docs/assets/external-verification/cloudtest-compatibility-summary.png" alt="非生产云测兼容性测试汇总：39 个测试总项，100% 通过率，0 个不通过和 0 个警告" width="1200" />
+</p>
+
+该次非生产兼容性测试展示了 39 个测试总项、100% 通过率、0 个不通过项和 0 个警告项；页面同时记录目标设备为 Mate X5、系统版本为 6.1.0.115、分辨率为 1080×2504。这仅描述该次测试记录，不外推为所有设备、版本或后续构建均已通过。
+
 ## 工作方式
 
 ```text
@@ -69,3 +101,16 @@ Finding（严重性 / 置信度 / 适用性）
 ## 发布前说明
 
 请在公开仓库设置 About 时使用 [ABOUT.md](ABOUT.md) 中的中英文描述与 Topics。每次发布前都应运行 `pnpm check`、`pnpm security:deps`，审查依赖许可证与公开差异；具体步骤见 [发布范围与检查](docs/10-验收与质量标准.md)。
+
+## 关于作者
+
+鸿鉴 HCheck 由爆裂队长NEXT（BLCaptain）独立创作与维护——一个独立、非官方的开源项目，专注把 HarmonyOS 应用工程的配置、依赖、软件包与验证证据，沉淀为面向 AI Agent 与工程团队的、可复现且可审计的发布前检查系统。
+
+- GitHub：[@dososo](https://github.com/dososo)
+- X / Twitter：[@thinkszyg](https://x.com/thinkszyg)
+- 邮箱：blteam2026@outlook.com
+- 开源中国传统纹样图录项目维护者：[wenyang.net](https://wenyang.net)
+
+如果这个项目对你有帮助，欢迎 Star、分享，或在 X 上 @我交流。
+
+HarmonyOS、OpenHarmony、ArkUI、华为及相关名称和商标归各自权利人所有。检查结论应结合目标 SDK、设备、官方文档和实际运行结果核验。

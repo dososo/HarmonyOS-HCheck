@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HCheck 真实运行输出</title>
+    <style>
+      :root { color-scheme: dark; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-width: 1120px;
+        background: #08111f;
+        color: #eef7ff;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      main { width: 1120px; margin: 0 auto; padding: 60px 56px 64px; }
+      .eyebrow { color: #5eead4; font-size: 14px; font-weight: 750; letter-spacing: .12em; }
+      h1 { font-size: 42px; margin: 14px 0 10px; letter-spacing: -.04em; }
+      .lede { color: #b7c9dc; font-size: 18px; line-height: 1.7; margin: 0 0 32px; }
+      .notice {
+        border: 1px solid #33516d;
+        border-radius: 14px;
+        padding: 16px 18px;
+        background: #0d1b2a;
+        color: #c9d9e8;
+        line-height: 1.55;
+        margin-bottom: 26px;
+      }
+      .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+      section { border: 1px solid #26435f; border-radius: 16px; overflow: hidden; background: #0b1726; }
+      header { padding: 18px 20px 15px; border-bottom: 1px solid #26435f; }
+      .status { font-size: 13px; letter-spacing: .09em; font-weight: 800; }
+      .fail { color: #fb7185; }
+      .pass { color: #5eead4; }
+      h2 { margin: 7px 0 0; font-size: 22px; letter-spacing: -.02em; }
+      .command { margin: 16px 20px 0; color: #9fb3c8; font: 12px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; }
+      pre {
+        margin: 12px 20px 20px;
+        padding: 16px;
+        min-height: 430px;
+        overflow: hidden;
+        border-radius: 10px;
+        background: #020812;
+        color: #d7e5f3;
+        font: 12px/1.52 ui-monospace, SFMono-Regular, Menlo, monospace;
+        white-space: pre-wrap;
+      }
+      .footer { color: #7f9ab3; font-size: 13px; margin: 26px 0 0; line-height: 1.55; }
+      code { color: #e7f4ff; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="eyebrow">HCheck · 可复现的本地 CLI 输出</div>
+      <h1>真实运行展示：发现问题，也确认没有问题</h1>
+      <p class="lede">以下内容来自仓库公开、非生产 fixture 的实际命令输出，使用 Node.js v24.18.0 执行。保留失败退出码与通过结果，便于独立复验。</p>
+      <div class="notice">这是一张对真实文本输出的静态排版展示图，不是设备、AGC 或生产项目运行画面。完整命令与原始格式可在本仓库重新运行。</div>
+      <div class="grid">
+        <section>
+          <header>
+            <div class="status fail">EXPECTED BLOCKER · EXIT 1</div>
+            <h2>缺少最小权限</h2>
+          </header>
+          <p class="command"><code>node packages/cli/dist/index.js scan fixtures/missing-permission --format terminal --fail-on high --confidence probable</code></p>
+          <pre>鸿鉴 HCheck 扫描报告
+运行 ID：run-18fc6601-24c5-45f2-b835-ff589b82868e
+模式：quick
+项目：com.hcheck.fixture.missingpermission
+规则包：hcheck-p0@0.6.0
+完整性：COMPLETE
+门禁：FAIL
+问题总数：1
+BLOCKER：1
+HIGH：0
+MEDIUM：0
+LOW：0
+INFO：0
+[BLOCKER] HOS-PERM-001 使用受限 API 但未声明对应权限
+  位置：entry/src/main/ets/Index.ets:4:10
+  源码调用 geoLocationManager.getCurrentLocation，但模块未声明 ohos.permission.APPROXIMATELY_LOCATION。
+  修复：根据实际业务需要在对应模块配置中声明权限；若业务不需要该能力，应移除调用。
+
+blocker_exit=1</pre>
+        </section>
+        <section>
+          <header>
+            <div class="status pass">CLEAN FIXTURE · EXIT 0</div>
+            <h2>干净工程通过门禁</h2>
+          </header>
+          <p class="command"><code>node packages/cli/dist/index.js scan fixtures/clean-stage-app --format terminal</code></p>
+          <pre>鸿鉴 HCheck 扫描报告
+运行 ID：run-e00717e8-c8f0-4582-bcf1-54fbc76d67eb
+模式：quick
+项目：com.hcheck.fixture.clean
+规则包：hcheck-p0@0.6.0
+完整性：COMPLETE
+门禁：PASS
+问题总数：0
+BLOCKER：0
+HIGH：0
+MEDIUM：0
+LOW：0
+INFO：0
+未发现满足当前扫描范围的问题。
+
+clean_exit=0</pre>
+        </section>
+      </div>
+      <p class="footer">复现前请先执行 <code>pnpm build</code>；所有 fixture 均为公开的非生产测试数据。</p>
+    </main>
+  </body>
+</html>
