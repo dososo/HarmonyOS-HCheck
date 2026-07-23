@@ -76,10 +76,10 @@ pnpm hcheck scan fixtures/clean-stage-app --format terminal
 
 ## 继续了解与参与
 
-- [CLI 命令、配置与退出码](docs/04-CLI与配置规范.md)
-- [规则体系与开发规范](docs/05-规则体系与开发规范.md)
-- [运行时证据与设备边界](docs/06-运行时验证与证据.md)
-- [安全与数据处理](docs/11-安全隐私与凭证.md)
+- [CLI 命令、配置与退出码](docs/02-CLI与配置规范.md)
+- [规则体系与开发规范](docs/03-规则体系与开发规范.md)
+- [运行时证据与设备边界](docs/04-运行时验证与证据.md)
+- [安全与数据处理](docs/07-安全隐私与凭证.md)
 - [贡献指南](CONTRIBUTING.md) · [行为准则](CODE_OF_CONDUCT.md) · [安全政策](SECURITY.md)
 
 ## 关于作者

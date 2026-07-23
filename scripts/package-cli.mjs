@@ -75,7 +75,7 @@ export async function createCliPackageManifest({
     externalValidation: {
       currentPlatform: platform,
       status: "local-workspace-only",
-      note: "package:cli 只生成本地 Node CLI 清单，不写入全局 PATH，也不声明跨平台安装器验证。公开发布范围见 docs/10-验收与质量标准.md。",
+      note: "package:cli 只生成本地 Node CLI 清单，不写入全局 PATH，也不声明跨平台安装器验证。公开发布范围见 docs/06-验收与质量标准.md。",
     },
   });
 }

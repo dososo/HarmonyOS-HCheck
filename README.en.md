@@ -76,10 +76,10 @@ Version `0.6.0` is a development baseline: `quick` scanning and local package in
 
 ## Learn more and contribute
 
-- [CLI commands, configuration, and exit codes](docs/04-CLI与配置规范.md)
-- [Rules and rule development](docs/05-规则体系与开发规范.md)
-- [Runtime evidence and device boundaries](docs/06-运行时验证与证据.md)
-- [Security and data handling](docs/11-安全隐私与凭证.md)
+- [CLI commands, configuration, and exit codes](docs/02-CLI与配置规范.md)
+- [Rules and rule development](docs/03-规则体系与开发规范.md)
+- [Runtime evidence and device boundaries](docs/04-运行时验证与证据.md)
+- [Security and data handling](docs/07-安全隐私与凭证.md)
 - [Contributing](CONTRIBUTING.md) · [Code of Conduct](CODE_OF_CONDUCT.md) · [Security policy](SECURITY.md)
 
 ## About the author
