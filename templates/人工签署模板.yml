@@ -1,0 +1,11 @@
+version: 1
+attestations:
+  - id: ATT-0001
+    topic: 行业资质适用性
+    status: accepted
+    owner: compliance-owner
+    decided_at: 2026-07-10
+    expires_at: 2027-07-10
+    evidence_refs:
+      - 公开或受控证据引用编号
+    notes: 不在此文件保存资质原件或个人信息。

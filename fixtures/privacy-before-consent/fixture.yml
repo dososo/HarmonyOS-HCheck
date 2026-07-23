@@ -1,0 +1,28 @@
+id: F003
+name: 同意前数据行为
+status: specification
+target:
+  platform: harmonyos
+  model: stage
+  api: 待在真实 SDK 环境锁定
+  modules:
+    - entry
+defect:
+  description: EntryAbility 在隐私同意前初始化模拟分析 SDK 并产生本地可观察事件。
+  injection: 使用本地测试 SDK 和本地服务，不发送真实个人信息。
+  safety: 不使用真实凭证、真实用户数据或生产服务。
+expected_findings:
+  - rule_id: HOS-PRIV-004
+    minimum_confidence: PROBABLE
+forbidden_findings: []
+build:
+  required: true
+  profile: release
+runtime:
+  required: true
+  flows:
+    - privacy-refuse
+  evidence:
+    - .hcheck/runtime/privacy-refuse.boundary.json
+reset: 通过重建工程、清除应用数据和重置本地测试服务恢复。
+notes: P2 当前仅提供本地运行时流程边界证据；静态为 PROBABLE，真实设备运行时证据齐全后才可升级 CONFIRMED。

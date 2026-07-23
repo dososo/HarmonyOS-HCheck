@@ -1,0 +1,194 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hcheck.dev/schemas/report.schema.json",
+  "title": "HCheck 扫描报告",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "run",
+    "completeness",
+    "project",
+    "summary",
+    "findings",
+    "evidence",
+    "errors",
+    "incompleteReasons",
+    "redaction"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": { "completeness": { "const": "COMPLETE" } },
+        "required": ["completeness"]
+      },
+      "then": {
+        "properties": {
+          "summary": {
+            "type": "object",
+            "properties": { "gate": { "enum": ["PASS", "FAIL"] } },
+            "required": ["gate"]
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "summary": {
+            "type": "object",
+            "properties": { "gate": { "const": "INCOMPLETE" } },
+            "required": ["gate"]
+          }
+        }
+      }
+    }
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "hcheckVersion", "mode", "startedAt", "finishedAt", "rulePacks"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?=.*\\S)[A-Za-z0-9._@+-]+$"
+        },
+        "hcheckVersion": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+        },
+        "mode": { "const": "quick" },
+        "startedAt": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d\\.\\d{3}Z$"
+        },
+        "finishedAt": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d\\.\\d{3}Z$"
+        },
+        "rulePacks": {
+          "type": "array",
+          "minItems": 1,
+          "contains": {
+            "type": "object",
+            "required": ["id"],
+            "properties": { "id": { "const": "hcheck-p0" } }
+          },
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "version"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^(?=.*\\S)[A-Za-z0-9._@+-]+$"
+              },
+              "version": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+              }
+            }
+          }
+        }
+      }
+    },
+    "completeness": { "enum": ["COMPLETE", "PARTIAL", "FAILED"] },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bundleName", "modules", "hasExternalModules"],
+      "properties": {
+        "bundleName": {
+          "type": "string",
+          "pattern": "^(?=.*\\.)(?=.*\\S)[A-Za-z0-9._@+-]+$"
+        },
+        "modules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "type"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "pattern": "^(?=.*\\S)[A-Za-z0-9._@+-]+$"
+              },
+              "type": { "enum": ["entry", "feature", "har", "shared", "skill"] },
+              "isExternal": { "type": "boolean" }
+            }
+          }
+        },
+        "hasExternalModules": { "type": "boolean" }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total", "bySeverity", "gate"],
+      "properties": {
+        "total": { "type": "integer", "minimum": 0 },
+        "bySeverity": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["BLOCKER", "HIGH", "MEDIUM", "LOW", "INFO"],
+          "properties": {
+            "BLOCKER": { "type": "integer", "minimum": 0 },
+            "HIGH": { "type": "integer", "minimum": 0 },
+            "MEDIUM": { "type": "integer", "minimum": 0 },
+            "LOW": { "type": "integer", "minimum": 0 },
+            "INFO": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "gate": { "enum": ["PASS", "FAIL", "INCOMPLETE"] }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": { "$ref": "finding.schema.json" }
+    },
+    "evidence": {
+      "type": "array",
+      "items": { "$ref": "evidence.schema.json" }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "message"],
+        "properties": {
+          "kind": {
+            "enum": [
+              "CONFIGURATION_ERROR",
+              "UNSUPPORTED_PROJECT",
+              "TOOL_UNAVAILABLE",
+              "TOOL_EXECUTION_ERROR",
+              "BUILD_FAILED",
+              "ARTIFACT_PARSE_ERROR",
+              "EXTERNAL_SERVICE_UNAVAILABLE",
+              "CREDENTIAL_ERROR",
+              "DEVICE_UNAVAILABLE",
+              "RULE_DEFINITION_ERROR",
+              "EVIDENCE_INCOMPLETE",
+              "INTERNAL_ERROR"
+            ]
+          },
+          "message": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "incompleteReasons": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1, "maxLength": 256 }
+    },
+    "redaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["applied"],
+      "properties": { "applied": { "const": true } }
+    }
+  }
+}

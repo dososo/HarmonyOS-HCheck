@@ -1,0 +1,47 @@
+id: permission-deny
+version: 1
+name: 权限拒绝后核心功能可用
+description: 验证用户拒绝非必要权限后应用不崩溃且能保留基础功能。
+requires:
+  clean_install: true
+  network_observation: none
+  test_account: false
+  device_capabilities:
+    - screenshot
+    - permission
+variables:
+  artifact: ${artifact}
+steps:
+  - id: install
+    action: install
+    package: ${artifact}
+    timeout_ms: 60000
+  - id: launch
+    action: launch
+    timeout_ms: 15000
+  - id: trigger-permission
+    action: tap
+    selector:
+      test_id: request-permission
+    timeout_ms: 5000
+  - id: deny-permission
+    action: set_permission
+    value: deny
+    timeout_ms: 5000
+  - id: checkpoint-after-deny
+    action: checkpoint
+assertions:
+  - id: permission-state-denied
+    type: permission_denied_state_visible
+    after_step: checkpoint-after-deny
+    severity: HIGH
+  - id: not-crashed
+    type: app_not_crashed
+    after_step: checkpoint-after-deny
+    severity: BLOCKER
+evidence:
+  screenshot: each_checkpoint
+  video: on_failure
+  hilog: true
+  network_timeline: none
+  permission_timeline: true

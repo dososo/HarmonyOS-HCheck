@@ -1,0 +1,9 @@
+{
+  module: {
+    name: "entry",
+    type: "entry",
+    deviceTypes: ["phone"],
+    // HCHECK_PLACEHOLDER 仅用于证明注释不会触发规则。
+    description: "普通 TODO test demo 文本不会触发精确标记规则",
+  },
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1.0.0",
+  "artifact": {
+    "type": "hap",
+    "sizeBytes": 2048
+  },
+  "entries": [
+    {
+      "path": "resources/rawfile/hcheck-debug-marker.txt",
+      "compressedSize": 12,
+      "uncompressedSize": 12,
+      "compressionMethod": "stored"
+    }
+  ],
+  "modules": [
+    {
+      "name": "entry",
+      "type": "entry",
+      "packageName": "com.hcheck.fixture.debugartifact",
+      "deviceTypes": ["phone"],
+      "requestPermissions": [],
+      "source": "module.json"
+    }
+  ],
+  "bundleName": "com.hcheck.fixture.debugartifact",
+  "permissions": [],
+  "debug": {
+    "enabledModules": [],
+    "markerFiles": ["resources/rawfile/hcheck-debug-marker.txt"]
+  },
+  "completeness": "COMPLETE",
+  "issues": []
+}

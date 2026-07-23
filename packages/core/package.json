@@ -1,0 +1,25 @@
+{
+  "name": "@hcheck/core",
+  "version": "0.6.0",
+  "private": true,
+  "license": "MIT",
+  "description": "鸿鉴 HCheck 核心领域模型",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "tsx --test test/**/*.test.ts"
+  },
+  "devDependencies": {
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1"
+  }
+}

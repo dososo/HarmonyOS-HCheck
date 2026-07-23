@@ -1,0 +1,10 @@
+id: hcheck-p0
+version: 0.6.0
+hcheck_compatibility: ">=0.6.0-0 <0.7.0"
+rules:
+  - metadata/HOS-META-003.yml
+  - package/HOS-PKG-001.yml
+  - package/HOS-PKG-006.yml
+  - package/HOS-PKG-007.yml
+  - permission/HOS-PERM-001.yml
+  - privacy/HOS-PRIV-002.yml

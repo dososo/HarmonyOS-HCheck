@@ -1,0 +1,32 @@
+id: HOS-CATEGORY-000
+version: 1.0.0
+status: experimental
+title: 规则标题
+summary: 用一句完整中文说明检测的问题、触发条件和风险。
+category:
+  technical: category
+  review: review-section
+applies_when:
+  all:
+    - project.platform == harmonyos
+inputs:
+  - project_snapshot
+detector:
+  type: structural
+  implementation: category.detectorName
+  options: {}
+severity: MEDIUM
+default_confidence: POSSIBLE
+policy_refs:
+  - source: 官方资料名称
+    section: 章节
+    url: https://developer.huawei.com/
+    verified_at: 2026-07-10
+remediation:
+  summary: 给出不误导、可执行的修复建议。
+  verification: hcheck scan . --rules HOS-CATEGORY-000
+autofix:
+  level: forbidden
+known_false_positives: []
+tags: []
+introduced_at: 2026-07-10

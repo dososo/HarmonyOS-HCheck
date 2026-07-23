@@ -1,0 +1,42 @@
+id: HOS-PKG-006
+version: 1.0.0
+status: active
+title: 正式软件包包含调试或测试资源
+summary: Release 软件包中发现明确的调试标志、测试入口、测试证书标识或不应发布的测试资源。
+category:
+  technical: package
+  review: app-security
+applies_when:
+  any:
+    - scan.mode == quick
+    - scan.mode == release
+    - scan.mode == submit
+inputs:
+  - package_manifest
+detector:
+  type: artifact
+  implementation: package.debugMaterial
+  options:
+    snapshot_path: .hcheck/package-snapshot.json
+severity: BLOCKER
+default_confidence: CONFIRMED
+policy_refs:
+  - source: Huawei 应用审核指南
+    section: 发布前检查软件包
+    url: https://developer.huawei.com/consumer/en/doc/app/agc-help-release-app-prepare-0000002306311921
+    verified_at: "2026-07-11"
+remediation:
+  summary: 从 Release 构建中移除调试入口、测试资源和测试配置，重新生成并检查软件包。
+  verification: hcheck scan . --rules HOS-PKG-006
+autofix:
+  level: review_required
+  allowed_paths:
+    - build-profile.json5
+    - AppScope/**
+known_false_positives:
+  - 名称中包含 debug/test 但属于真实业务资源时，需要文件级证据确认，不能只按文件名阻断。
+tags:
+  - Release
+  - 调试
+  - 产物
+introduced_at: "2026-07-10"

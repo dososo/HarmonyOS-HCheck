@@ -1,0 +1,8 @@
+{
+  module: {
+    name: "entry",
+    type: "entry",
+    deviceTypes: ["phone"],
+    description: "正式产物调试资源结构样例",
+  },
+}

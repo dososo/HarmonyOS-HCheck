@@ -1,0 +1,38 @@
+version: 1
+
+project:
+  root: .
+  app_scope: AppScope
+  platform: harmonyos
+
+build:
+  profile: release
+  clean: true
+  command: ./hvigorw assembleApp
+
+scan:
+  exclude:
+    paths:
+      - node_modules/**
+      - oh_modules/**
+      - build/**
+  fail_on: blocker
+  minimum_confidence: probable
+
+agc:
+  enabled: false
+  read_only: true
+  app_id_env: HCHECK_AGC_APP_ID
+  client_id_env: HCHECK_AGC_CLIENT_ID
+  client_secret_env: HCHECK_AGC_CLIENT_SECRET
+
+runtime:
+  device: local
+  redact_logs: true
+  upload_source: false
+
+report:
+  formats:
+    - terminal
+    - json
+  directory: .hcheck/reports

@@ -1,0 +1,9 @@
+{
+  "name": "entry",
+  "version": "1.0.0",
+  "description": "鸿鉴 HCheck P4 非生产 entry 模块",
+  "main": "",
+  "author": "",
+  "license": "UNLICENSED",
+  "dependencies": {}
+}

@@ -1,0 +1,39 @@
+id: HOS-PRIV-004
+version: 1.0.0
+status: experimental
+title: 用户同意隐私政策前发生敏感数据行为
+summary: 在用户明确同意隐私政策之前，应用或第三方 SDK 已发生敏感 API、权限、传感器或网络数据行为。
+category:
+  technical: privacy
+  review: user-privacy
+applies_when:
+  all:
+    - project.has_privacy_consent_flow == true
+inputs:
+  - source_ast
+  - dependency_graph
+  - runtime_timeline
+detector:
+  type: composite
+  implementation: privacy.beforeConsentActivity
+  options:
+    runtime_confirmation_required_for_confirmed: true
+severity: BLOCKER
+default_confidence: PROBABLE
+policy_refs:
+  - source: Huawei 应用审核指南
+    section: 用户隐私
+    url: https://developer.huawei.com/consumer/cn/doc/App/50104
+    verified_at: "2026-07-10"
+remediation:
+  summary: 将非必要 SDK 初始化和敏感能力调用移动到用户明确同意之后；拒绝时不得继续相关处理。
+  verification: hcheck verify run --flow privacy-refuse
+autofix:
+  level: forbidden
+known_false_positives:
+  - 静态调用路径无法证明真实执行时只应为 PROBABLE；运行时需排除系统和无关进程流量。
+tags:
+  - 同意门控
+  - 运行时
+  - 隐私
+introduced_at: "2026-07-10"

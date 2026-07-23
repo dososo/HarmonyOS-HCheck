@@ -1,0 +1,33 @@
+id: device-smoke
+version: 1
+name: 设备冒烟验收
+description: 仅验证开发签名非生产 HAP 的安装、启动、专用标签日志、停止和卸载闭环。
+requires:
+  clean_install: true
+  network_observation: none
+  test_account: false
+variables:
+  artifact: ${artifact}
+steps:
+  - id: install
+    action: install
+    package: ${artifact}
+  - id: launch
+    action: launch
+  - id: checkpoint
+    action: checkpoint
+  - id: stop
+    action: stop
+  - id: uninstall
+    action: uninstall
+assertions:
+  - id: hilog-marker
+    type: hilog_contains_marker
+    after_step: checkpoint
+    severity: BLOCKER
+evidence:
+  screenshot: never
+  video: never
+  hilog: true
+  network_timeline: none
+  permission_timeline: false

@@ -1,0 +1,8 @@
+# 通知
+
+鸿鉴 HCheck 的源码以 [MIT License](LICENSE) 发布。
+
+本仓库不包含华为账号、生产应用、签名证书、私钥、真实设备日志、真实用户数据或生产 API 凭据。
+HarmonyOS、DevEco Studio、AppGallery Connect 及其相关名称可能是其各自权利人的商标；本项目与其权利人不存在隶属、背书或审核关系。
+
+第三方 Node.js 依赖及其许可证信息以 `pnpm-lock.yaml` 和各依赖自身的分发材料为准。发布者应在每次正式发布前重新生成 SBOM 并完成许可证审查。

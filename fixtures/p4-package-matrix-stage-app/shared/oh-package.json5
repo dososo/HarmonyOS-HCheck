@@ -1,0 +1,9 @@
+{
+  "name": "shared",
+  "version": "1.0.0",
+  "description": "鸿鉴 HCheck P4 非生产 shared 模块",
+  "main": "Index.ets",
+  "author": "",
+  "license": "UNLICENSED",
+  "dependencies": {}
+}

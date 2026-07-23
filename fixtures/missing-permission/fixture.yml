@@ -1,0 +1,25 @@
+id: F002
+name: 缺少权限声明
+status: structural
+target:
+  platform: harmonyos
+  model: stage
+  api: geoLocationManager.getCurrentLocation
+  modules:
+    - entry
+defect:
+  description: 源码调用官方已核验需要权限的定位 API，但 module.json5 缺少对应权限。
+  injection: 在单一调用点植入 geoLocationManager.getCurrentLocation，并故意不声明 ohos.permission.APPROXIMATELY_LOCATION。
+  safety: 不使用真实凭证、真实用户数据或生产服务。
+expected_findings:
+  - rule_id: HOS-PERM-001
+    minimum_confidence: PROBABLE
+forbidden_findings: []
+build:
+  required: false
+  profile: release
+runtime:
+  required: false
+  flows: []
+reset: 在 module.json5 中声明 ohos.permission.APPROXIMATELY_LOCATION，或移除定位 API 调用后重新扫描。
+notes: 当前为 quick 结构扫描样例，不包含 SDK、签名或 Release 构建证明；升级为可编译 Fixture 时需在合法 HarmonyOS SDK 环境重新生成。

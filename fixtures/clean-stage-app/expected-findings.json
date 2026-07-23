@@ -1,0 +1,7 @@
+{
+  "fixtureId": "F001",
+  "status": "structural",
+  "expected": [],
+  "forbidden": [],
+  "note": "结构扫描应为零 Finding；该样例不可作为 SDK 编译证明。"
+}

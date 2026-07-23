@@ -1,0 +1,12 @@
+{
+  "fixtureId": "F009",
+  "expected": [
+    {
+      "ruleId": "HOS-META-003",
+      "minimumConfidence": "PROBABLE",
+      "count": 1
+    }
+  ],
+  "forbidden": [],
+  "notes": "重复扫描应生成相同指纹；修复唯一占位标记后该 Finding 应消失。"
+}

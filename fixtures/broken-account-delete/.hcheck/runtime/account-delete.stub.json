@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0.0",
+  "fixtureId": "F007",
+  "flowId": "account-delete",
+  "evidenceKind": "account-deletion-stub-contract",
+  "status": "local_contract",
+  "runtimeConfirmed": false,
+  "redacted": true,
+  "service": {
+    "kind": "local-recorded-stub",
+    "endpoint": "http://127.0.0.1:18080/account-delete-stub",
+    "production": false
+  },
+  "account": {
+    "subject": "fixture-account-001",
+    "redacted": true
+  },
+  "checks": [
+    {
+      "id": "delete-request-accepted",
+      "status": "passed",
+      "summary": "本地测试桩接受注销请求。"
+    },
+    {
+      "id": "old-token-rejected",
+      "status": "passed",
+      "summary": "旧会话摘要被本地测试桩拒绝。"
+    },
+    {
+      "id": "relogin-rejected",
+      "status": "passed",
+      "summary": "注销后重新登录被本地测试桩拒绝。"
+    },
+    {
+      "id": "local-data-cleared",
+      "status": "passed",
+      "summary": "本地缓存摘要已清理。"
+    }
+  ],
+  "evidence": {
+    "collectedAt": "2026-07-11T00:00:00Z",
+    "commands": [
+      "pnpm schema:check",
+      "pnpm --filter @hcheck/core test -- test/runtime-flow.test.ts"
+    ]
+  },
+  "boundaries": [
+    "仅使用本地录制测试桩，不访问真实账号、生产服务、AGC、真机、模拟器、HarmonyOS PC 或云测。"
+  ]
+}

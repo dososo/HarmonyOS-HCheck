@@ -1,0 +1,12 @@
+{
+  "fixtureId": "F003",
+  "status": "specification",
+  "expected": [
+    {
+      "ruleId": "HOS-PRIV-004",
+      "minimumConfidence": "PROBABLE"
+    }
+  ],
+  "forbidden": [],
+  "note": "P2 只提供本地运行时流程边界证据，静态预期保持 PROBABLE；未执行真实设备流程，不包含伪造 CONFIRMED 指纹。"
+}

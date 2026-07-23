@@ -1,0 +1,89 @@
+version: 1
+project:
+  root: .
+  app_scope: AppScope
+  modules:
+    - entry
+  platform: harmonyos
+  minimum_api: 12
+
+build:
+  profile: release
+  clean: true
+  command: ./hvigorw assembleApp
+  artifact:
+    include:
+      - "**/*.app"
+      - "**/*.hap"
+    exclude:
+      - "**/debug/**"
+
+scan:
+  modes:
+    quick:
+      build: false
+      package: false
+      agc: false
+      runtime: false
+    release:
+      build: true
+      package: true
+      agc: false
+      runtime: false
+    submit:
+      build: true
+      package: true
+      agc: true
+      runtime: true
+  exclude:
+    paths:
+      - node_modules/**
+      - oh_modules/**
+      - build/**
+    rules: []
+  fail_on: blocker
+  minimum_confidence: probable
+
+policy:
+  rulesets:
+    - harmonyos-release-readiness
+  fail_on: blocker
+  minimum_confidence: probable
+
+agc:
+  enabled: false
+  read_only: true
+  app_id_env: HCHECK_AGC_APP_ID
+  client_id_env: HCHECK_AGC_CLIENT_ID
+  client_secret_env: HCHECK_AGC_CLIENT_SECRET
+  cache_ttl_hours: 24
+
+privacy:
+  consent_state_keys:
+    - privacyAccepted
+    - userConsent
+  policy_files:
+    - docs/privacy-policy.md
+  sdk_manifest:
+    - docs/third-party-sdk.yml
+
+runtime:
+  device: local
+  reset_before_run: true
+  record_video: on_failure
+  capture_screenshot: each_assertion
+  redact_logs: true
+  upload_source: false
+  upload_package: never
+
+baseline:
+  path: .hcheck/baseline.json
+  fail_only_new: true
+  suppressions: .hcheck/suppressions.json
+
+report:
+  formats:
+    - terminal
+    - json
+  directory: .hcheck/reports
+  include_absolute_paths: false

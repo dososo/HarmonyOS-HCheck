@@ -1,0 +1,25 @@
+id: flow-id
+version: 1
+name: 流程名称
+description: 流程目标与边界。
+requires:
+  clean_install: true
+  network_observation: metadata_only
+  test_account: false
+  device_capabilities: []
+variables: {}
+steps:
+  - id: launch
+    action: launch
+    timeout_ms: 15000
+assertions:
+  - id: app-not-crashed
+    type: app_not_crashed
+    after_step: launch
+    severity: BLOCKER
+evidence:
+  screenshot: on_failure
+  video: on_failure
+  hilog: true
+  network_timeline: metadata_only
+  permission_timeline: true

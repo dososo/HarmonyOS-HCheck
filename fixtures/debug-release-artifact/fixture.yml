@@ -1,0 +1,25 @@
+id: F006
+name: 正式产物包含调试资源
+status: structural
+target:
+  platform: harmonyos
+  model: stage
+  api: 待在真实 SDK 环境锁定
+  modules:
+    - entry
+defect:
+  description: Release 产物包含唯一测试入口或调试资源标识。
+  injection: 通过受控构建资源植入，避免仅靠文件名。
+  safety: 不使用真实凭证、真实用户数据或生产服务。
+expected_findings:
+  - rule_id: HOS-PKG-006
+    minimum_confidence: CONFIRMED
+forbidden_findings: []
+build:
+  required: false
+  profile: release
+runtime:
+  required: false
+  flows: []
+reset: 通过重建工程、清除应用数据和重置本地测试服务恢复。
+notes: 当前使用脱敏 package-snapshot.json 作为本地录制样本，不包含真实 SDK、签名或可发布产物证明。

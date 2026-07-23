@@ -1,0 +1,30 @@
+id: F007
+name: 账号注销无效
+status: specification
+target:
+  platform: harmonyos
+  model: stage
+  api: 待在真实 SDK 环境锁定
+  modules:
+    - entry
+defect:
+  description: 应用存在注销入口，但按钮仅退出登录或不清除本地 Token。
+  injection: 使用本地模拟账号服务和可重置 Token。
+  safety: 不使用真实凭证、真实用户数据或生产服务。
+expected_findings:
+  - rule_id: HOS-ACCOUNT-002
+    minimum_confidence: CONFIRMED
+  - rule_id: HOS-ACCOUNT-003
+    minimum_confidence: CONFIRMED
+forbidden_findings: []
+build:
+  required: true
+  profile: release
+runtime:
+  required: true
+  flows:
+    - account-delete
+  evidence:
+    - .hcheck/runtime/account-delete.stub.json
+reset: 通过重建工程、清除应用数据和重置本地测试服务恢复。
+notes: P3 当前提供账号注销本地测试桩协议和脱敏合同证据；不访问真实账号、生产服务、AGC、真机、模拟器、HarmonyOS PC 或云测，不能伪造真实设备 CONFIRMED。

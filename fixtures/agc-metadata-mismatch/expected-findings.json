@@ -1,0 +1,12 @@
+{
+  "fixtureId": "F008",
+  "status": "specification",
+  "expected": [
+    {
+      "ruleId": "HOS-META-001",
+      "minimumConfidence": "CONFIRMED"
+    }
+  ],
+  "forbidden": [],
+  "note": "真实实现后由黄金测试生成稳定指纹；当前不包含伪造指纹。"
+}

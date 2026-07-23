@@ -1,0 +1,40 @@
+id: HOS-PKG-001
+version: 1.0.0
+status: active
+title: 工程与软件包的 Bundle 标识不一致
+summary: 本地工程与录制软件包快照中的 Bundle 标识不一致，可能导致上传、更新或发布对象错误。
+category:
+  technical: package
+  review: app-information
+applies_when:
+  any:
+    - scan.mode == quick
+    - scan.mode == release
+    - scan.mode == submit
+inputs:
+  - project_snapshot
+  - package_manifest
+detector:
+  type: composite
+  implementation: package.bundleIdentityConsistency
+  options:
+    snapshot_path: .hcheck/package-snapshot.json
+severity: BLOCKER
+default_confidence: CONFIRMED
+policy_refs:
+  - source: Huawei AppGallery Connect Help
+    section: 发布前检查软件包
+    url: https://developer.huawei.com/consumer/en/doc/app/agc-help-release-app-prepare-0000002306311921
+    verified_at: "2026-07-11"
+remediation:
+  summary: 统一工程配置、签名配置和最终软件包的 Bundle 标识，确认后重新构建。
+  verification: hcheck scan . --rules HOS-PKG-001
+autofix:
+  level: forbidden
+known_false_positives:
+  - 多环境项目故意使用不同 Bundle 时，必须明确选择本次发布目标，不能全局抑制。
+tags:
+  - Bundle
+  - AGC
+  - 软件包
+introduced_at: "2026-07-10"

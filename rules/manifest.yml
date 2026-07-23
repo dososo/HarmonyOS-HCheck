@@ -1,0 +1,17 @@
+id: harmonyos-release-readiness
+version: 0.6.0
+status: experimental
+hcheck_compatibility: ">=0.6.0 <0.7.0"
+verified_at: "2026-07-11"
+rules:
+  - environment/HOS-ENV-001.yml
+  - build/HOS-BUILD-001.yml
+  - package/HOS-PKG-001.yml
+  - package/HOS-PKG-006.yml
+  - package/HOS-PKG-007.yml
+  - permission/HOS-PERM-001.yml
+  - privacy/HOS-PRIV-001.yml
+  - privacy/HOS-PRIV-002.yml
+  - privacy/HOS-PRIV-004.yml
+  - account/HOS-ACCOUNT-001.yml
+  - metadata/HOS-META-003.yml

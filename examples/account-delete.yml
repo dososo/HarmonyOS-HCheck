@@ -1,0 +1,74 @@
+id: account-delete
+version: 1
+name: 账号注销本地测试桩协议
+description: 验证隔离测试账号注销后旧会话失效、重新登录被拒绝且本地数据已清理；该流程只定义本地测试桩合同。
+requires:
+  clean_install: true
+  network_observation: metadata_only
+  test_account: true
+  device_capabilities:
+    - screenshot
+    - hilog
+    - test_account_stub
+variables:
+  artifact: ${artifact}
+steps:
+  - id: install
+    action: install
+    package: ${artifact}
+    timeout_ms: 60000
+  - id: prepare-account-stub
+    action: invoke_test_hook
+    value: account-delete.prepare-local-stub
+    timeout_ms: 5000
+  - id: launch
+    action: launch
+    timeout_ms: 15000
+  - id: login-test-account
+    action: invoke_test_hook
+    value: account-delete.login-redacted-test-account
+    timeout_ms: 5000
+  - id: request-account-delete
+    action: invoke_test_hook
+    value: account-delete.request-delete
+    timeout_ms: 5000
+  - id: clear-local-data
+    action: clear_data
+    timeout_ms: 10000
+  - id: verify-old-token-rejected
+    action: invoke_test_hook
+    value: account-delete.verify-old-session-rejected
+    timeout_ms: 5000
+  - id: verify-relogin-rejected
+    action: invoke_test_hook
+    value: account-delete.verify-relogin-rejected
+    timeout_ms: 5000
+  - id: checkpoint-after-delete
+    action: checkpoint
+assertions:
+  - id: delete-request-accepted
+    type: delete_request_accepted_by_local_stub
+    after_step: request-account-delete
+    severity: BLOCKER
+  - id: old-token-rejected
+    type: old_token_invalidated
+    after_step: verify-old-token-rejected
+    severity: BLOCKER
+  - id: relogin-rejected
+    type: relogin_after_delete_rejected
+    after_step: verify-relogin-rejected
+    severity: BLOCKER
+  - id: local-data-cleared
+    type: local_account_data_cleared
+    after_step: checkpoint-after-delete
+    severity: HIGH
+  - id: not-crashed
+    type: app_not_crashed
+    after_step: checkpoint-after-delete
+    severity: BLOCKER
+evidence:
+  screenshot: on_failure
+  video: on_failure
+  hilog: true
+  network_timeline: metadata_only
+  permission_timeline: false

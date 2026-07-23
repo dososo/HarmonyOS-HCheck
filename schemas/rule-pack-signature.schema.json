@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hcheck.dev/schemas/rule-pack-signature.schema.json",
+  "title": "HCheck 规则包签名清单",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "key_id", "algorithm", "signed_at", "files", "signature"],
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "key_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "algorithm": {
+      "const": "local-test-ed25519"
+    },
+    "signed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 512,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "^(?!/)(?![A-Za-z]:[\\\\/])(?!//)(?!.*(?:^|[\\\\/])\\.\\.(?:[\\\\/]|$))(?!.*(?:^|[\\\\/])(?:[\\\\/]|$)).+$"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        }
+      }
+    },
+    "signature": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": "^[A-Za-z0-9._:=+/-]+$"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "fixtureId": "F004",
+  "status": "structural",
+  "expected": [
+    {
+      "ruleId": "HOS-PRIV-002",
+      "minimumConfidence": "PROBABLE",
+      "count": 1
+    }
+  ],
+  "forbidden": [],
+  "note": "使用模拟 @mock/analytics-sdk 依赖和本地隐私政策缺失披露证明规则行为；不代表真实商业 SDK、AGC 或可发布产物已通过。"
+}

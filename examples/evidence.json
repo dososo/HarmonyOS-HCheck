@@ -1,0 +1,13 @@
+{
+  "id": "evidence:188fb3932fe895230e32038f1789e21c6870156305399087241127d6ea95e3d2",
+  "type": "config",
+  "source": "entry/src/main/module.json5",
+  "summary": "发现精确占位标记 HCHECK_PLACEHOLDER。",
+  "contentHash": "sha256:60ace7e6aaa672beef30fe22459dca48f397cb742edf46915256a8089c639c72",
+  "redacted": true,
+  "location": {
+    "uri": "entry/src/main/module.json5",
+    "line": 6,
+    "column": 19
+  }
+}

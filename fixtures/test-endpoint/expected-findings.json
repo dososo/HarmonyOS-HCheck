@@ -1,0 +1,12 @@
+{
+  "fixtureId": "F010",
+  "expected": [
+    {
+      "ruleId": "HOS-PKG-007",
+      "minimumConfidence": "PROBABLE",
+      "count": 1
+    }
+  ],
+  "forbidden": ["HOS-META-003"],
+  "notes": "重复扫描应生成相同指纹；替换本地环回测试地址后该 Finding 应消失。"
+}

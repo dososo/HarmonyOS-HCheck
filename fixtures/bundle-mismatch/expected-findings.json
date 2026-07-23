@@ -1,0 +1,13 @@
+{
+  "fixtureId": "F005",
+  "status": "structural",
+  "expected": [
+    {
+      "ruleId": "HOS-PKG-001",
+      "minimumConfidence": "CONFIRMED",
+      "count": 1
+    }
+  ],
+  "forbidden": [],
+  "note": "使用脱敏 package-snapshot.json 录制样本证明工程 Bundle 与软件包 Bundle 不一致；不代表真实 SDK 构建产物已通过。"
+}

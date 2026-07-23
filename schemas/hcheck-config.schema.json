@@ -1,0 +1,353 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hcheck.dev/schemas/hcheck-config.schema.json",
+  "title": "鸿鉴 HCheck 配置",
+  "type": "object",
+  "required": [
+    "version",
+    "project",
+    "build",
+    "scan",
+    "policy",
+    "agc",
+    "privacy",
+    "runtime",
+    "baseline",
+    "report"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "project": {
+      "type": "object",
+      "required": ["root", "app_scope", "modules", "platform", "minimum_api"],
+      "additionalProperties": false,
+      "properties": {
+        "root": {
+          "type": "string",
+          "minLength": 1
+        },
+        "app_scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "modules": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "platform": {
+          "const": "harmonyos"
+        },
+        "minimum_api": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "build": {
+      "type": "object",
+      "required": ["profile", "clean", "command", "artifact"],
+      "additionalProperties": false,
+      "properties": {
+        "profile": {
+          "type": "string",
+          "minLength": 1
+        },
+        "clean": {
+          "type": "boolean"
+        },
+        "command": {
+          "type": "string",
+          "minLength": 1
+        },
+        "artifact": {
+          "type": "object",
+          "required": ["include", "exclude"],
+          "additionalProperties": false,
+          "properties": {
+            "include": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "exclude": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "scan": {
+      "type": "object",
+      "required": ["modes", "exclude", "fail_on", "minimum_confidence"],
+      "additionalProperties": false,
+      "properties": {
+        "modes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "build": {
+                "type": "boolean"
+              },
+              "package": {
+                "type": "boolean"
+              },
+              "agc": {
+                "type": "boolean"
+              },
+              "runtime": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "exclude": {
+          "type": "object",
+          "required": ["paths", "rules"],
+          "additionalProperties": false,
+          "properties": {
+            "paths": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            },
+            "rules": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^HOS-[A-Z]+-[0-9]{3}$"
+              },
+              "uniqueItems": true
+            }
+          }
+        },
+        "fail_on": {
+          "type": "string",
+          "enum": [
+            "blocker",
+            "high",
+            "medium",
+            "low",
+            "none"
+          ]
+        },
+        "minimum_confidence": {
+          "type": "string",
+          "enum": [
+            "confirmed",
+            "probable",
+            "possible",
+            "manual"
+          ]
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "required": ["rulesets", "fail_on", "minimum_confidence"],
+      "additionalProperties": false,
+      "properties": {
+        "rulesets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "fail_on": {
+          "type": "string",
+          "enum": [
+            "blocker",
+            "high",
+            "medium",
+            "low",
+            "none"
+          ]
+        },
+        "minimum_confidence": {
+          "type": "string",
+          "enum": [
+            "confirmed",
+            "probable",
+            "possible",
+            "manual"
+          ]
+        }
+      }
+    },
+    "agc": {
+      "type": "object",
+      "required": [
+        "enabled",
+        "read_only",
+        "app_id_env",
+        "client_id_env",
+        "client_secret_env",
+        "cache_ttl_hours"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "read_only": {
+          "const": true
+        },
+        "app_id_env": {
+          "type": "string",
+          "pattern": "^[A-Z_][A-Z0-9_]*$"
+        },
+        "client_id_env": {
+          "type": "string",
+          "pattern": "^[A-Z_][A-Z0-9_]*$"
+        },
+        "client_secret_env": {
+          "type": "string",
+          "pattern": "^[A-Z_][A-Z0-9_]*$"
+        },
+        "cache_ttl_hours": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 168
+        }
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "required": ["consent_state_keys", "policy_files", "sdk_manifest"],
+      "additionalProperties": false,
+      "properties": {
+        "consent_state_keys": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "policy_files": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "sdk_manifest": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "required": [
+        "device",
+        "reset_before_run",
+        "record_video",
+        "capture_screenshot",
+        "redact_logs",
+        "upload_source",
+        "upload_package"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "device": {
+          "type": "string"
+        },
+        "reset_before_run": {
+          "type": "boolean"
+        },
+        "record_video": {
+          "type": "string",
+          "enum": [
+            "always",
+            "on_failure",
+            "never"
+          ]
+        },
+        "capture_screenshot": {
+          "type": "string",
+          "enum": [
+            "each_assertion",
+            "on_failure",
+            "never"
+          ]
+        },
+        "redact_logs": {
+          "type": "boolean"
+        },
+        "upload_source": {
+          "const": false
+        },
+        "upload_package": {
+          "type": "string",
+          "enum": [
+            "never",
+            "confirm",
+            "always"
+          ]
+        }
+      }
+    },
+    "baseline": {
+      "type": "object",
+      "required": ["path", "fail_only_new", "suppressions"],
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "fail_only_new": {
+          "type": "boolean"
+        },
+        "suppressions": {
+          "type": "string"
+        }
+      }
+    },
+    "report": {
+      "type": "object",
+      "required": ["formats", "directory", "include_absolute_paths"],
+      "additionalProperties": false,
+      "properties": {
+        "formats": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "terminal",
+              "json",
+              "sarif",
+              "junit",
+              "html",
+              "agent-json"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "directory": {
+          "type": "string"
+        },
+        "include_absolute_paths": {
+          "const": false
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "1.0.0",
+  "run": {
+    "id": "run-example-0001",
+    "hcheckVersion": "0.6.0",
+    "mode": "quick",
+    "startedAt": "2026-07-11T08:05:33.790Z",
+    "finishedAt": "2026-07-11T08:05:33.791Z",
+    "rulePacks": [
+      {
+        "id": "hcheck-p0",
+        "version": "0.6.0"
+      }
+    ]
+  },
+  "completeness": "COMPLETE",
+  "project": {
+    "bundleName": "com.hcheck.fixture.placeholder",
+    "modules": [
+      {
+        "name": "entry",
+        "type": "entry",
+        "isExternal": false
+      }
+    ],
+    "hasExternalModules": false
+  },
+  "summary": {
+    "total": 1,
+    "bySeverity": {
+      "BLOCKER": 0,
+      "HIGH": 1,
+      "MEDIUM": 0,
+      "LOW": 0,
+      "INFO": 0
+    },
+    "gate": "FAIL"
+  },
+  "findings": [
+    {
+      "schemaVersion": "1.0.0",
+      "id": "finding:cdb7183a88c44e291997671af72cfdcb4dea024116c2426e49eccbc3186b6819",
+      "ruleId": "HOS-META-003",
+      "ruleVersion": "1.0.0",
+      "title": "发布内容包含占位标记",
+      "severity": "HIGH",
+      "confidence": "PROBABLE",
+      "applicability": "APPLICABLE",
+      "fingerprint": "sha256:cdb7183a88c44e291997671af72cfdcb4dea024116c2426e49eccbc3186b6819",
+      "message": "可发布内容中发现精确占位标记。",
+      "locations": [
+        {
+          "uri": "entry/src/main/module.json5",
+          "line": 6,
+          "column": 19
+        }
+      ],
+      "evidenceIds": [
+        "evidence:188fb3932fe895230e32038f1789e21c6870156305399087241127d6ea95e3d2"
+      ],
+      "policyRefs": [
+        {
+          "source": "Huawei 应用审核 Checklist",
+          "section": "应用信息与应用功能",
+          "url": "https://developer.huawei.com/consumer/cn/doc/app/50170",
+          "verifiedAt": "2026-07-10"
+        }
+      ],
+      "remediation": {
+        "summary": "移除正式版本中的测试、占位和未完成功能提示，或确认其为真实产品内容并进行精确豁免。",
+        "verification": "hcheck scan . --rules HOS-META-003"
+      },
+      "autofix": "review_required",
+      "status": "new"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evidence:188fb3932fe895230e32038f1789e21c6870156305399087241127d6ea95e3d2",
+      "type": "config",
+      "source": "entry/src/main/module.json5",
+      "summary": "发现精确占位标记 HCHECK_PLACEHOLDER。",
+      "contentHash": "sha256:60ace7e6aaa672beef30fe22459dca48f397cb742edf46915256a8089c639c72",
+      "redacted": true,
+      "location": {
+        "uri": "entry/src/main/module.json5",
+        "line": 6,
+        "column": 19
+      }
+    }
+  ],
+  "errors": [],
+  "incompleteReasons": [],
+  "redaction": {
+    "applied": true
+  }
+}

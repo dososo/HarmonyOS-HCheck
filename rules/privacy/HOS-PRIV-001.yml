@@ -1,0 +1,42 @@
+id: HOS-PRIV-001
+version: 1.0.0
+status: experimental
+title: 未发现可访问的隐私政策
+summary: 应用配置、项目资料或 AGC 快照中未发现可访问且可关联到本应用版本的隐私政策。
+category:
+  technical: privacy
+  review: user-privacy
+applies_when:
+  any:
+    - project.processes_personal_information == true
+    - project.privacy_status == unknown
+inputs:
+  - project_snapshot
+  - agc_snapshot
+detector:
+  type: composite
+  implementation: privacy.policyAvailability
+  options:
+    network_check: explicit
+severity: BLOCKER
+default_confidence: PROBABLE
+policy_refs:
+  - source: Huawei 应用审核指南
+    section: 用户隐私
+    url: https://developer.huawei.com/consumer/cn/doc/App/50104
+    verified_at: "2026-07-10"
+  - source: Huawei AppGallery Connect
+    section: 管理隐私声明
+    url: https://developer.huawei.com/consumer/cn/doc/app/agc-help-privacy-policy-overview-0000002316881805
+    verified_at: "2026-07-10"
+remediation:
+  summary: 配置与当前应用一致、可访问的隐私政策，并确保应用内与 AGC 使用同一有效版本。
+  verification: hcheck privacy compare
+autofix:
+  level: forbidden
+known_false_positives:
+  - 离线模式无法验证 URL 可访问性时只能标记 UNKNOWN，不得确认失效。
+tags:
+  - 隐私政策
+  - AGC
+introduced_at: "2026-07-10"

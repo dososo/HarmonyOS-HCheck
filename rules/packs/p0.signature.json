@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "key_id": "local-test-key",
+  "algorithm": "local-test-ed25519",
+  "signed_at": "2026-07-11T00:00:00Z",
+  "files": [
+    {
+      "path": "metadata/HOS-META-003.yml",
+      "sha256": "b79981ac6af8998c48027e0b1e6a8d0d70361427ddc34a9f9d84d863ecdc8e3e"
+    },
+    {
+      "path": "package/HOS-PKG-001.yml",
+      "sha256": "15f9af05ac4fcf70fd7685f271d7bee4d1217b69094d56429174855b2deabd3a"
+    },
+    {
+      "path": "package/HOS-PKG-006.yml",
+      "sha256": "b46e9721d20b97590fefd7d6dcd6cf5af6e8bcbe8a2c9f83f673db258e777ad6"
+    },
+    {
+      "path": "package/HOS-PKG-007.yml",
+      "sha256": "afc478467ec01366a1d3e03eef571a2da407fa56f04b6d69d8fb8b8324b74825"
+    },
+    {
+      "path": "packs/p0.yml",
+      "sha256": "4f14c8c9ff47ddf22a7914e691d10a24b39efdb13494cb678d6c7730f25a1c56"
+    },
+    {
+      "path": "permission/HOS-PERM-001.yml",
+      "sha256": "0e46a09833cd4ad464689d400806b5ce6bc124cc7c063a52acdc817795abd5e6"
+    },
+    {
+      "path": "privacy/HOS-PRIV-002.yml",
+      "sha256": "2134de50c63db96641689953bf68ceb451a3c12aa0e0e6e340e7d15c76a48ea7"
+    }
+  ],
+  "signature": "local-test-signature-not-production"
+}

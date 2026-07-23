@@ -1,0 +1,45 @@
+id: HOS-PRIV-002
+version: 1.0.0
+status: active
+title: 最终应用包含未披露的第三方 SDK
+summary: 依赖图或最终软件包中发现第三方 SDK 候选，但隐私政策、SDK 清单或 AGC 隐私声明中未发现对应披露。
+category:
+  technical: privacy
+  review: user-privacy
+applies_when:
+  any:
+    - scan.mode == quick
+    - scan.mode == release
+    - scan.mode == submit
+inputs:
+  - dependency_graph
+  - privacy_policy
+detector:
+  type: composite
+  implementation: privacy.sdkDisclosureConsistency
+  options:
+    minimum_fingerprint_confidence: possible
+    policy_files:
+      - docs/privacy-policy.md
+severity: BLOCKER
+default_confidence: PROBABLE
+policy_refs:
+  - source: Huawei AppGallery Connect
+    section: 管理隐私声明
+    url: https://developer.huawei.com/consumer/cn/doc/app/agc-help-privacy-policy-overview-0000002316881805
+    verified_at: "2026-07-10"
+  - source: Huawei 应用审核指南
+    section: 用户隐私与第三方 SDK
+    url: https://developer.huawei.com/consumer/cn/doc/App/50104
+    verified_at: "2026-07-10"
+remediation:
+  summary: 确认 SDK 的实际用途和数据行为，更新应用内隐私政策、SDK 清单与 AGC 隐私声明；不需要的 SDK 应从最终产物移除。
+  verification: hcheck scan . --rules HOS-PRIV-002
+autofix:
+  level: forbidden
+known_false_positives:
+  - SDK 指纹可能与自研模块重名，只有软件包和依赖证据充分时才能升级为 CONFIRMED。
+tags:
+  - 第三方SDK
+  - 隐私披露
+introduced_at: "2026-07-10"

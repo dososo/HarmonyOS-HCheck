@@ -1,0 +1,25 @@
+id: F009
+name: 发布元数据占位内容
+status: structural
+target:
+  platform: harmonyos
+  model: stage
+  api: 不依赖特定 API
+  modules:
+    - entry
+defect:
+  description: 在声明的应用元数据或源目录中保留一个明确、唯一的发布占位标记。
+  injection: 使用可精确识别的 HCHECK_PLACEHOLDER 文本，避免用泛化的 test、demo 等词制造误报。
+  safety: 不使用真实凭证、真实用户数据或生产服务。
+expected_findings:
+  - rule_id: HOS-META-003
+    minimum_confidence: PROBABLE
+forbidden_findings: []
+build:
+  required: false
+  profile: release
+runtime:
+  required: false
+  flows: []
+reset: 删除唯一的 HCHECK_PLACEHOLDER 标记并重新扫描。
+notes: 该样例只证明结构扫描与精确标记检测行为，不包含 SDK、签名或构建产物，不可作为 HarmonyOS 工程可编译证明。

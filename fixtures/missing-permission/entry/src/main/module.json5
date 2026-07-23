@@ -1,0 +1,8 @@
+{
+  module: {
+    name: "entry",
+    type: "entry",
+    deviceTypes: ["phone"],
+    description: "缺少位置权限声明的结构样例",
+  },
+}

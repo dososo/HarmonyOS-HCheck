@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hcheck.dev/schemas/fixture.schema.json",
+  "title": "HCheck Fixture 规格",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "name",
+    "status",
+    "target",
+    "defect",
+    "expected_findings",
+    "forbidden_findings",
+    "build",
+    "runtime"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^F[0-9]{3}$"
+    },
+    "name": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "specification",
+        "structural",
+        "compilable"
+      ]
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "platform",
+        "model"
+      ],
+      "properties": {
+        "platform": {
+          "const": "harmonyos"
+        },
+        "model": {
+          "const": "stage"
+        },
+        "api": {
+          "type": [
+            "integer",
+            "string"
+          ]
+        },
+        "modules": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "defect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "description",
+        "injection"
+      ],
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "injection": {
+          "type": "string"
+        },
+        "safety": {
+          "type": "string"
+        }
+      }
+    },
+    "expected_findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "rule_id",
+          "minimum_confidence"
+        ],
+        "properties": {
+          "rule_id": {
+            "type": "string"
+          },
+          "minimum_confidence": {
+            "type": "string",
+            "enum": [
+              "CONFIRMED",
+              "PROBABLE",
+              "POSSIBLE",
+              "MANUAL"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "forbidden_findings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "build": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required"
+      ],
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "profile": {
+          "type": "string"
+        }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required"
+      ],
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "flows": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "p3_blocked_by": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^TASK-[0-9]{4}$"
+          }
+        }
+      }
+    },
+    "reset": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

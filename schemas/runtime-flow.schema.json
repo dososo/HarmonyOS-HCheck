@@ -1,0 +1,216 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hcheck.dev/schemas/runtime-flow.schema.json",
+  "title": "HCheck 运行时流程",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "name",
+    "requires",
+    "steps",
+    "assertions",
+    "evidence"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]+$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "requires": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "clean_install": {
+          "type": "boolean"
+        },
+        "network_observation": {
+          "type": "string",
+          "enum": [
+            "none",
+            "metadata_only",
+            "explicit_deep_capture"
+          ]
+        },
+        "test_account": {
+          "type": "boolean"
+        },
+        "device_capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "variables": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "action"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "install",
+              "uninstall",
+              "clear_data",
+              "launch",
+              "stop",
+              "wait_for",
+              "wait",
+              "tap",
+              "input",
+              "press_key",
+              "set_permission",
+              "checkpoint",
+              "invoke_test_hook"
+            ]
+          },
+          "package": {
+            "type": "string"
+          },
+          "duration_ms": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "timeout_ms": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "selector": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "value": {
+            "type": "string"
+          },
+          "retry": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "max_attempts": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 5
+              },
+              "backoff_ms": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    "assertions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "type": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "after_step": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "options": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "BLOCKER",
+              "HIGH",
+              "MEDIUM",
+              "LOW",
+              "INFO"
+            ]
+          }
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "screenshot": {
+          "type": "string",
+          "enum": [
+            "each_checkpoint",
+            "on_failure",
+            "never"
+          ]
+        },
+        "video": {
+          "type": "string",
+          "enum": [
+            "always",
+            "on_failure",
+            "never"
+          ]
+        },
+        "hilog": {
+          "type": "boolean"
+        },
+        "network_timeline": {
+          "type": "string",
+          "enum": [
+            "none",
+            "metadata_only",
+            "explicit_deep_capture"
+          ]
+        },
+        "permission_timeline": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

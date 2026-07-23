@@ -1,0 +1,16 @@
+{
+  "fixtureId": "F007",
+  "status": "specification",
+  "expected": [
+    {
+      "ruleId": "HOS-ACCOUNT-002",
+      "minimumConfidence": "CONFIRMED"
+    },
+    {
+      "ruleId": "HOS-ACCOUNT-003",
+      "minimumConfidence": "CONFIRMED"
+    }
+  ],
+  "forbidden": [],
+  "note": "P3 只记录账号注销本地测试桩合同证据；未访问真实账号、未执行生产注销、未伪造真实设备 CONFIRMED 指纹。"
+}

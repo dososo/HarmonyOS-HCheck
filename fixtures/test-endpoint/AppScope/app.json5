@@ -1,0 +1,7 @@
+{
+  app: {
+    bundleName: "com.hcheck.fixture.testendpoint",
+    versionCode: 1000000,
+    versionName: "1.0.0",
+  },
+}

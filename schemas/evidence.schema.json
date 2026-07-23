@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hcheck.dev/schemas/evidence.schema.json",
+  "title": "HCheck 证据",
+  "$comment": "深度64、节点10000和canonical UTF8 1MiB属于Schema之外的限制；数组1000、对象keys256、字符串16384已由Schema表达。所有生产入口必须执行core validator的附加资源门禁。",
+  "$defs": {
+    "safeJson": {
+      "anyOf": [
+        { "type": "null" },
+        { "type": "boolean" },
+        { "type": "number" },
+        { "type": "string", "maxLength": 16384 },
+        {
+          "type": "array",
+          "maxItems": 1000,
+          "items": { "$ref": "#/$defs/safeJson" }
+        },
+        {
+          "type": "object",
+          "maxProperties": 256,
+          "propertyNames": {
+            "maxLength": 16384,
+            "not": {
+              "enum": ["__proto__", "constructor", "prototype"]
+            }
+          },
+          "additionalProperties": { "$ref": "#/$defs/safeJson" }
+        }
+      ]
+    }
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "source", "summary", "contentHash", "redacted"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^evidence:[a-f0-9]{64}$"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "source",
+        "config",
+        "dependency",
+        "artifact",
+        "tool",
+        "agc",
+        "runtime",
+        "manual",
+        "derived"
+      ]
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?=.*\\S)(?!/)(?!\\./)(?![A-Za-z][A-Za-z0-9+.-]*:)(?!.*//)(?!\\.\\.(?:/|$))(?!.*\\/\\.\\.(?:/|$))(?!.*\\\\).+$"
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "contentHash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "collectedAt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(?:\\.\\d+)?Z$"
+    },
+    "redacted": {
+      "const": true
+    },
+    "location": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["uri"],
+      "properties": {
+        "uri": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?=.*\\S)(?!/)(?!\\./)(?![A-Za-z][A-Za-z0-9+.-]*:)(?!.*//)(?!\\.\\.(?:/|$))(?!.*\\/\\.\\.(?:/|$))(?!.*\\\\).+$"
+        },
+        "line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "column": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "logicalPath": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?=.*\\S)(?!/)(?!\\./)(?![A-Za-z][A-Za-z0-9+.-]*:)(?!.*//)(?!\\.\\.(?:/|$))(?!.*\\/\\.\\.(?:/|$))(?!.*\\\\).+$"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "maxProperties": 256,
+      "propertyNames": {
+        "maxLength": 16384,
+        "not": {
+          "enum": ["__proto__", "constructor", "prototype"]
+        }
+      },
+      "additionalProperties": { "$ref": "#/$defs/safeJson" }
+    },
+    "archiveRef": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?=.*\\S)(?!/)(?!\\./)(?![A-Za-z][A-Za-z0-9+.-]*:)(?!.*//)(?!\\.\\.(?:/|$))(?!.*\\/\\.\\.(?:/|$))(?!.*\\\\).+$"
+    }
+  }
+}

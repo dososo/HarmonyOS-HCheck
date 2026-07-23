@@ -1,0 +1,215 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hcheck.dev/schemas/finding.schema.json",
+  "title": "HCheck Finding",
+  "$comment": "深度64、节点10000和canonical UTF8 1MiB属于Schema之外的限制；数组1000、对象keys256、字符串16384已由Schema表达。所有生产入口必须执行core validator的附加资源门禁。",
+  "$defs": {
+    "safeJson": {
+      "anyOf": [
+        { "type": "null" },
+        { "type": "boolean" },
+        { "type": "number" },
+        { "type": "string", "maxLength": 16384 },
+        {
+          "type": "array",
+          "maxItems": 1000,
+          "items": { "$ref": "#/$defs/safeJson" }
+        },
+        {
+          "type": "object",
+          "maxProperties": 256,
+          "propertyNames": {
+            "maxLength": 16384,
+            "not": {
+              "enum": ["__proto__", "constructor", "prototype"]
+            }
+          },
+          "additionalProperties": { "$ref": "#/$defs/safeJson" }
+        }
+      ]
+    }
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "id",
+    "ruleId",
+    "ruleVersion",
+    "title",
+    "severity",
+    "confidence",
+    "applicability",
+    "fingerprint",
+    "message",
+    "locations",
+    "evidenceIds",
+    "remediation",
+    "autofix",
+    "status"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^finding:[a-f0-9]{64}$"
+    },
+    "ruleId": {
+      "type": "string",
+      "pattern": "^HOS-[A-Z]+-[0-9]{3}$"
+    },
+    "ruleVersion": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-(?:0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*)(?:\\.(?:0|[1-9][0-9]*|[0-9]*[A-Za-z-][0-9A-Za-z-]*))*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["BLOCKER", "HIGH", "MEDIUM", "LOW", "INFO"]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["CONFIRMED", "PROBABLE", "POSSIBLE", "MANUAL"]
+    },
+    "applicability": {
+      "type": "string",
+      "enum": ["APPLICABLE", "NOT_APPLICABLE", "UNKNOWN", "NEEDS_ATTESTATION"]
+    },
+    "fingerprint": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "message": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "locations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["uri"],
+        "properties": {
+          "uri": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?=.*\\S)(?!/)(?!\\./)(?![A-Za-z][A-Za-z0-9+.-]*:)(?!.*//)(?!\\.\\.(?:/|$))(?!.*\\/\\.\\.(?:/|$))(?!.*\\\\).+$"
+          },
+          "line": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "column": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "logicalPath": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?=.*\\S)(?!/)(?!\\./)(?![A-Za-z][A-Za-z0-9+.-]*:)(?!.*//)(?!\\.\\.(?:/|$))(?!.*\\/\\.\\.(?:/|$))(?!.*\\\\).+$"
+          }
+        }
+      }
+    },
+    "evidenceIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^evidence:[a-f0-9]{64}$"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "policyRefs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source", "section"],
+        "properties": {
+          "source": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "section": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "verifiedAt": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      }
+    },
+    "remediation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["summary", "verification"],
+      "properties": {
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "verification": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "details": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      }
+    },
+    "autofix": {
+      "type": "string",
+      "enum": ["allowed", "review_required", "forbidden"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["new", "existing", "suppressed", "resolved", "needs-attestation"]
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "present": {
+          "type": "boolean"
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      }
+    },
+    "properties": {
+      "type": "object",
+      "maxProperties": 256,
+      "propertyNames": {
+        "maxLength": 16384,
+        "not": {
+          "enum": ["__proto__", "constructor", "prototype"]
+        }
+      },
+      "additionalProperties": { "$ref": "#/$defs/safeJson" }
+    }
+  }
+}

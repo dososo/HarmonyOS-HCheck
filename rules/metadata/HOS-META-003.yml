@@ -1,0 +1,54 @@
+id: HOS-META-003
+version: 1.0.0
+status: active
+title: 发布内容包含占位标记
+summary: 可发布源码或配置的字符串值中发现鸿鉴精确占位标记，需要在发布前删除或替换。
+category:
+  technical: metadata
+  review: app-information
+applies_when:
+  any:
+    - scan.mode == quick
+    - scan.mode == release
+    - scan.mode == submit
+inputs:
+  - project_snapshot
+  - source_text
+detector:
+  type: structural
+  implementation: metadata.placeholderContent
+  options:
+    marker: HCHECK_PLACEHOLDER
+    extensions:
+      - .ets
+      - .ts
+      - .json5
+    exclude_paths:
+      - node_modules/**
+      - "**/node_modules/**"
+      - oh_modules/**
+      - "**/oh_modules/**"
+      - build/**
+      - "**/build/**"
+severity: HIGH
+default_confidence: PROBABLE
+policy_refs:
+  - source: Huawei 应用审核 Checklist
+    section: 应用信息与应用功能
+    url: https://developer.huawei.com/consumer/cn/doc/app/50170
+    verified_at: "2026-07-10"
+remediation:
+  summary: 移除正式版本中的测试、占位和未完成功能提示，或确认其为真实产品内容并进行精确豁免。
+  verification: hcheck scan . --rules HOS-META-003
+autofix:
+  level: review_required
+  allowed_paths:
+    - "**/*.ets"
+    - "**/*.ts"
+    - "**/*.json5"
+known_false_positives:
+  - 真实业务字符串若刻意包含 HCHECK_PLACEHOLDER，需要通过工程根相对路径精确豁免。
+tags:
+  - 元数据
+  - 占位
+introduced_at: "2026-07-10"

@@ -1,0 +1,26 @@
+{
+  "name": "@hcheck/config",
+  "version": "0.6.0",
+  "private": true,
+  "license": "MIT",
+  "description": "鸿鉴 HCheck 配置合同与加载器",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "tsx --test test/**/*.test.ts"
+  },
+  "dependencies": {
+    "@hcheck/core": "workspace:*",
+    "ajv": "8.20.0",
+    "yaml": "2.9.0"
+  }
+}

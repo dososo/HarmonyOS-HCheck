@@ -1,0 +1,8 @@
+{
+  module: {
+    name: "entry",
+    type: "entry",
+    deviceTypes: ["phone"],
+    description: "Bundle 标识不一致结构样例",
+  },
+}

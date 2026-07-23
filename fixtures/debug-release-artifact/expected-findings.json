@@ -1,0 +1,13 @@
+{
+  "fixtureId": "F006",
+  "status": "structural",
+  "expected": [
+    {
+      "ruleId": "HOS-PKG-006",
+      "minimumConfidence": "CONFIRMED",
+      "count": 1
+    }
+  ],
+  "forbidden": [],
+  "note": "使用脱敏 package-snapshot.json 录制样本证明正式产物包含调试资源标记；不代表真实 SDK 构建产物已通过。"
+}

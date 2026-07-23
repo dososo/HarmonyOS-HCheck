@@ -1,0 +1,24 @@
+name: 功能或规则建议 / Feature or rule request
+description: 提出范围清晰、可验证的改进建议
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 要解决的问题 / Problem
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 建议方案 / Proposal
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 官方来源、样例和边界 / Evidence, examples, and limits
+      description: 对规则建议请提供官方来源、适用范围和潜在误报。
+    validations:
+      required: true

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "0.1.0",
+  "capturedAt": "2026-07-10T12:00:00Z",
+  "source": "official-connect-api",
+  "application": {
+    "appId": "REDACTED_APP_ID",
+    "bundleName": "com.example.hcheckfixture",
+    "name": "示例应用"
+  },
+  "release": {
+    "versionName": "1.0.0",
+    "versionCode": 1000000
+  },
+  "cache": {
+    "cachedAt": "2026-07-10T12:00:00Z",
+    "expiresAt": "2026-07-10T13:00:00Z",
+    "ttlSeconds": 3600
+  },
+  "privacyDeclaration": {
+    "status": "configured",
+    "url": "https://example.invalid/privacy"
+  },
+  "reviewAccount": {
+    "required": true,
+    "configured": true,
+    "username": "REDACTED_REVIEW_ACCOUNT"
+  },
+  "capabilities": {
+    "fields": [
+      "application",
+      "release",
+      "privacy-status",
+      "review-account-status"
+    ],
+    "unsupported": [
+      "full-page-metadata",
+      "release.versionName"
+    ]
+  },
+  "redacted": true
+}

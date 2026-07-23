@@ -1,0 +1,6 @@
+{
+  "modelVersion": "5.0.0",
+  "description": "鸿鉴 HCheck P4 非生产构建样例",
+  "dependencies": {},
+  "devDependencies": {}
+}

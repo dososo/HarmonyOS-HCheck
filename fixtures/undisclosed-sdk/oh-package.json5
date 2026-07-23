@@ -1,0 +1,5 @@
+{
+  dependencies: {
+    "@mock/analytics-sdk": "1.0.0",
+  },
+}

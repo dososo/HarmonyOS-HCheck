@@ -1,0 +1,60 @@
+id: privacy-refuse
+version: 1
+name: 首次启动拒绝隐私政策
+description: 验证用户明确同意前及拒绝后不存在非必要敏感行为。
+requires:
+  clean_install: true
+  network_observation: metadata_only
+  test_account: false
+  device_capabilities:
+    - screenshot
+    - hilog
+variables:
+  artifact: ${artifact}
+steps:
+  - id: install
+    action: install
+    package: ${artifact}
+    timeout_ms: 60000
+  - id: launch
+    action: launch
+    timeout_ms: 15000
+  - id: wait-dialog
+    action: wait_for
+    selector:
+      text_contains: 隐私
+    timeout_ms: 10000
+    retry:
+      max_attempts: 2
+      backoff_ms: 500
+  - id: checkpoint-before-choice
+    action: checkpoint
+  - id: reject
+    action: tap
+    selector:
+      text_any:
+        - 不同意
+        - 拒绝
+    timeout_ms: 5000
+  - id: wait-after-reject
+    action: wait
+    duration_ms: 5000
+assertions:
+  - id: no-permission-before-consent
+    type: no_sensitive_permission_dialog_before_consent
+    after_step: checkpoint-before-choice
+    severity: BLOCKER
+  - id: no-network-before-consent
+    type: no_sensitive_network_before_consent
+    after_step: checkpoint-before-choice
+    severity: BLOCKER
+  - id: not-crashed
+    type: app_not_crashed
+    after_step: wait-after-reject
+    severity: BLOCKER
+evidence:
+  screenshot: each_checkpoint
+  video: on_failure
+  hilog: true
+  network_timeline: metadata_only
+  permission_timeline: true

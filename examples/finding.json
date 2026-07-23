@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "finding:cdb7183a88c44e291997671af72cfdcb4dea024116c2426e49eccbc3186b6819",
+  "ruleId": "HOS-META-003",
+  "ruleVersion": "1.0.0",
+  "title": "发布内容包含占位标记",
+  "severity": "HIGH",
+  "confidence": "PROBABLE",
+  "applicability": "APPLICABLE",
+  "fingerprint": "sha256:cdb7183a88c44e291997671af72cfdcb4dea024116c2426e49eccbc3186b6819",
+  "message": "可发布内容中发现精确占位标记。",
+  "locations": [
+    {
+      "uri": "entry/src/main/module.json5",
+      "line": 6,
+      "column": 19
+    }
+  ],
+  "evidenceIds": [
+    "evidence:188fb3932fe895230e32038f1789e21c6870156305399087241127d6ea95e3d2"
+  ],
+  "policyRefs": [
+    {
+      "source": "Huawei 应用审核 Checklist",
+      "section": "应用信息与应用功能",
+      "url": "https://developer.huawei.com/consumer/cn/doc/app/50170",
+      "verifiedAt": "2026-07-10"
+    }
+  ],
+  "remediation": {
+    "summary": "移除正式版本中的测试、占位和未完成功能提示，或确认其为真实产品内容并进行精确豁免。",
+    "verification": "hcheck scan . --rules HOS-META-003"
+  },
+  "autofix": "review_required",
+  "status": "new"
+}

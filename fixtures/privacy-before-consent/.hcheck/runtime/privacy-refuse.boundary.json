@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0.0",
+  "fixtureId": "F003",
+  "flowId": "privacy-refuse",
+  "evidenceKind": "runtime-flow-boundary",
+  "status": "local_contract",
+  "runtimeConfirmed": false,
+  "staticConfidence": "PROBABLE",
+  "redacted": true,
+  "claims": [
+    "该 Fixture 的 P2 边界只证明 privacy-refuse 流程合同已存在且可被本地 Schema/Runtime Flow 校验消费。",
+    "静态阶段只能作为 HOS-PRIV-004 的 PROBABLE 候选，不升级为 CONFIRMED。"
+  ],
+  "boundaries": [
+    "未执行真实 HDC、真机、模拟器、HarmonyOS PC、DevEco Testing 或云测。",
+    "未采集真实网络正文、设备标识、账号、Token、Cookie 或用户输入。",
+    "未生成可发布 APP/HAP 或真实运行截图/视频。"
+  ],
+  "requiredToConfirm": [
+    "使用合法 HarmonyOS SDK 生成可运行 Fixture 工程。",
+    "在受控设备或云测环境执行 privacy-refuse 流程。",
+    "保存脱敏网络元数据、权限时间线、截图或视频，并绑定 APP/HAP SHA-256。"
+  ]
+}

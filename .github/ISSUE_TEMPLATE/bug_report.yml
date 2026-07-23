@@ -1,0 +1,32 @@
+name: 缺陷报告 / Bug report
+description: 报告可复现的 HCheck 缺陷（请勿提交敏感信息）
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请勿提交 Token、私钥、真实用户数据、生产软件包、设备标识或未脱敏日志。安全问题请遵循 SECURITY.md。
+  - type: textarea
+    id: problem
+    attributes:
+      label: 问题与预期行为 / Problem and expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 最小复现 / Minimal reproduction
+      description: 提供已脱敏的命令、输入和结果。
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: HCheck、Node.js 与操作系统版本
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 已脱敏输出 / Redacted output

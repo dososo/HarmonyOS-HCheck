@@ -1,0 +1,27 @@
+name: 质量门禁
+
+on:
+  pull_request:
+  push:
+    branches: [main, master]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".node-version"
+          cache: pnpm
+      - run: corepack enable
+      - run: corepack install
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+      - run: pnpm security:deps

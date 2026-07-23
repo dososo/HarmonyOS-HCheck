@@ -1,0 +1,16 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "P4 真实 SDK/Hvigor 构建验收模块"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "P4 构建样例主入口"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "鸿鉴 HCheck P4 构建样例"
+    }
+  ]
+}

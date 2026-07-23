@@ -1,0 +1,13 @@
+{
+  "fixtureId": "F002",
+  "status": "structural",
+  "expected": [
+    {
+      "ruleId": "HOS-PERM-001",
+      "minimumConfidence": "PROBABLE",
+      "count": 1
+    }
+  ],
+  "forbidden": [],
+  "note": "重复扫描应生成相同指纹；在 module.json5 声明 ohos.permission.APPROXIMATELY_LOCATION 后该 Finding 应消失。"
+}

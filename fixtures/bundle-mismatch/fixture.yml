@@ -1,0 +1,25 @@
+id: F005
+name: Bundle 标识不一致
+status: structural
+target:
+  platform: harmonyos
+  model: stage
+  api: 待在真实 SDK 环境锁定
+  modules:
+    - entry
+defect:
+  description: 工程、模拟软件包清单或脱敏 AGC 快照中的 Bundle 标识不一致。
+  injection: 只修改一个来源，其他来源保持一致。
+  safety: 不使用真实凭证、真实用户数据或生产服务。
+expected_findings:
+  - rule_id: HOS-PKG-001
+    minimum_confidence: CONFIRMED
+forbidden_findings: []
+build:
+  required: false
+  profile: release
+runtime:
+  required: false
+  flows: []
+reset: 通过重建工程、清除应用数据和重置本地测试服务恢复。
+notes: 当前使用脱敏 package-snapshot.json 作为本地录制样本，不包含真实 SDK、签名、AGC 或可发布产物证明。

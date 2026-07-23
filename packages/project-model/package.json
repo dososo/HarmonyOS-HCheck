@@ -1,0 +1,25 @@
+{
+  "name": "@hcheck/project-model",
+  "version": "0.6.0",
+  "private": true,
+  "license": "MIT",
+  "description": "HarmonyOS 工程快照模型",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "tsx --test test/**/*.test.ts"
+  },
+  "dependencies": {
+    "@hcheck/core": "workspace:*",
+    "json5": "2.2.3"
+  }
+}

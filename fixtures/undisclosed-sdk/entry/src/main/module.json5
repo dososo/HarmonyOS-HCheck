@@ -1,0 +1,8 @@
+{
+  module: {
+    name: "entry",
+    type: "entry",
+    deviceTypes: ["phone"],
+    description: "未披露 SDK 结构样例",
+  },
+}

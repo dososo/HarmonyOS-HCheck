@@ -1,0 +1,65 @@
+id: HOS-PERM-001
+version: 1.0.0
+status: active
+title: 使用受限 API 但未声明对应权限
+summary: 源码中存在受权限保护的 API 调用，但应用模块配置未声明对应权限。
+category:
+  technical: permission
+  review: user-privacy
+applies_when:
+  any:
+    - scan.mode == quick
+    - scan.mode == release
+    - scan.mode == submit
+inputs:
+  - project_snapshot
+  - source_ast
+detector:
+  type: semantic
+  implementation: permission.apiDeclarationConsistency
+  options:
+    mapping_source: official-minimal-2026-07-11
+    extensions:
+      - .ets
+      - .ts
+    exclude_paths:
+      - node_modules/**
+      - "**/node_modules/**"
+      - oh_modules/**
+      - "**/oh_modules/**"
+      - build/**
+      - "**/build/**"
+    mappings:
+      - import_module: "@kit.LocationKit"
+        import_name: geoLocationManager
+        member: getCurrentLocation
+        permission: ohos.permission.APPROXIMATELY_LOCATION
+        source: https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/js-apis-geolocationmanager-V5
+        verified_at: "2026-07-11"
+severity: BLOCKER
+default_confidence: PROBABLE
+policy_refs:
+  - source: Huawei geoLocationManager API
+    section: geoLocationManager.getCurrentLocation
+    url: https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/js-apis-geolocationmanager-V5
+    verified_at: "2026-07-11"
+    notes: 官方 API 文档标注该接口需要 ohos.permission.APPROXIMATELY_LOCATION。
+  - source: Huawei HarmonyOS 权限开发指南
+    section: 在配置文件中声明权限
+    url: https://developer.huawei.com/consumer/cn/doc/HarmonyOS-Guides/declare-permissions
+    verified_at: "2026-07-11"
+    notes: 官方说明未声明所需权限可能导致授权失败并影响上架。
+remediation:
+  summary: 根据实际业务需要在对应模块配置中声明权限；若业务不需要该能力，应移除调用。
+  verification: hcheck scan . --rules HOS-PERM-001
+autofix:
+  level: review_required
+  allowed_paths:
+    - "**/module.json5"
+known_false_positives:
+  - 对已导入的 geoLocationManager 做复杂封装、条件编译或跨文件别名时，当前最小 AST 检测可能需要人工复核。
+tags:
+  - 权限
+  - API
+  - 位置服务
+introduced_at: "2026-07-11"

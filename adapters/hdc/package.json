@@ -1,0 +1,18 @@
+{
+  "name": "@hcheck/adapter-hdc",
+  "version": "0.6.0",
+  "private": true,
+  "license": "MIT",
+  "description": "HCheck hdc 适配器骨架",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "tsx --test test/**/*.test.ts"
+  },
+  "dependencies": {
+    "@hcheck/core": "workspace:*"
+  }
+}

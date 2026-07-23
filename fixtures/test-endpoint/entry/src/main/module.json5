@@ -1,0 +1,8 @@
+{
+  module: {
+    name: "entry",
+    type: "entry",
+    deviceTypes: ["phone"],
+    description: "发布测试地址结构样例",
+  },
+}

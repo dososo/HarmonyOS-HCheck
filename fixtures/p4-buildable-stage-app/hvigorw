@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SELF_DIR="$(cd "$(dirname "$0")" && pwd -P)"
+SELF_PATH="$SELF_DIR/$(basename "$0")"
+HVIGOR_BIN="$(command -v hvigorw || true)"
+
+if [[ -z "$HVIGOR_BIN" ]]; then
+  echo "未在 PATH 中找到 DevEco Studio 自带的 hvigorw。请先把 DevEco 的 tools/hvigor/bin 加入 PATH。" >&2
+  exit 127
+fi
+
+HVIGOR_DIR="$(cd "$(dirname "$HVIGOR_BIN")" && pwd -P)"
+HVIGOR_PATH="$HVIGOR_DIR/$(basename "$HVIGOR_BIN")"
+if [[ "$HVIGOR_PATH" == "$SELF_PATH" ]]; then
+  echo "PATH 中的 hvigorw 指向当前项目 wrapper。请把 DevEco 的 tools/hvigor/bin 放在当前工程路径之前。" >&2
+  exit 127
+fi
+
+exec "$HVIGOR_PATH" "$@"

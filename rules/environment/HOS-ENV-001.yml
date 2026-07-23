@@ -1,0 +1,38 @@
+id: HOS-ENV-001
+version: 1.0.0
+status: experimental
+title: 项目所需 SDK 或 API 环境不可用
+summary: 项目声明的 HarmonyOS SDK 或 API 目标在当前扫描环境中缺失或无法满足，导致构建和检测结果不可复现。
+category:
+  technical: environment
+  review: release-readiness
+applies_when:
+  all:
+    - project.platform == harmonyos
+inputs:
+  - project_snapshot
+  - tool_report
+detector:
+  type: composite
+  implementation: environment.sdkCompatibility
+  options:
+    require_exact_tool_snapshot: true
+severity: BLOCKER
+default_confidence: CONFIRMED
+policy_refs:
+  - source: Huawei HarmonyOS Command Line Tools
+    section: 获取 Command Line Tools
+    url: https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-commandline-get
+    verified_at: "2026-07-10"
+    notes: 工程实际兼容版本需结合项目配置和本机工具能力验证。
+remediation:
+  summary: 安装或选择与项目要求一致的 SDK 和命令行工具，并固定本地与 CI 的工具版本。
+  verification: hcheck doctor --strict
+autofix:
+  level: forbidden
+known_false_positives:
+  - 项目通过未被 HCheck 识别的自定义 SDK 路径构建，需要显式配置工具路径。
+tags:
+  - 环境
+  - SDK
+introduced_at: "2026-07-10"

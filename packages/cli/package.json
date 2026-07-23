@@ -1,0 +1,36 @@
+{
+  "name": "@hcheck/cli",
+  "version": "0.6.0",
+  "private": true,
+  "license": "MIT",
+  "description": "hcheck 命令行入口",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "pretest": "pnpm --filter @hcheck/core build && pnpm --filter @hcheck/config build && pnpm --filter @hcheck/project-model build && pnpm --filter @hcheck/rule-engine build && pnpm --filter @hcheck/reporters build && pnpm --filter @hcheck/agent-protocol build && pnpm build",
+    "test": "tsx --test test/**/*.test.ts",
+    "start": "tsx src/index.ts"
+  },
+  "bin": {
+    "hcheck": "./dist/index.js"
+  },
+  "dependencies": {
+    "@hcheck/adapter-hdc": "workspace:*",
+    "@hcheck/config": "workspace:*",
+    "@hcheck/core": "workspace:*",
+    "@hcheck/agent-protocol": "workspace:*",
+    "@hcheck/project-model": "workspace:*",
+    "@hcheck/reporters": "workspace:*",
+    "@hcheck/rule-engine": "workspace:*",
+    "yaml": "2.9.0"
+  }
+}

@@ -1,0 +1,22 @@
+version: 1
+fixtures:
+- id: F001
+  path: clean-stage-app
+- id: F002
+  path: missing-permission
+- id: F003
+  path: privacy-before-consent
+- id: F004
+  path: undisclosed-sdk
+- id: F005
+  path: bundle-mismatch
+- id: F006
+  path: debug-release-artifact
+- id: F007
+  path: broken-account-delete
+- id: F008
+  path: agc-metadata-mismatch
+- id: F009
+  path: placeholder-metadata
+- id: F010
+  path: test-endpoint

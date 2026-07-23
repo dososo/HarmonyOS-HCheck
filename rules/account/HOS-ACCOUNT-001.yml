@@ -1,0 +1,41 @@
+id: HOS-ACCOUNT-001
+version: 1.0.0
+status: experimental
+title: 存在账号注册能力但未发现账号注销入口
+summary: 项目中存在账号注册或创建能力，但静态界面与导航证据中未发现可识别的账号注销入口。
+category:
+  technical: account
+  review: user-privacy
+applies_when:
+  all:
+    - project.supports_account_registration == true
+inputs:
+  - source_ast
+  - manual_attestation
+detector:
+  type: semantic
+  implementation: account.deletionEntryCandidate
+  options:
+    require_manual_confirmation: true
+severity: BLOCKER
+default_confidence: POSSIBLE
+policy_refs:
+  - source: Huawei 账号注销常见问题
+    section: 账号注销要求
+    url: https://developer.huawei.com/consumer/cn/doc/app/faq-11
+    verified_at: "2026-07-10"
+  - source: Huawei 应用审核 Checklist
+    section: 账号与审核信息
+    url: https://developer.huawei.com/consumer/cn/doc/app/50170
+    verified_at: "2026-07-10"
+remediation:
+  summary: 在应用内提供清晰可达的账号注销路径，并通过运行时流程验证注销真实完成，而非仅退出登录。
+  verification: hcheck verify run --flow account-delete
+autofix:
+  level: forbidden
+known_false_positives:
+  - 注销入口可能由远程配置、Web 页面或动态路由提供，静态未发现时必须人工确认。
+tags:
+  - 账号注销
+  - 人工确认
+introduced_at: "2026-07-10"

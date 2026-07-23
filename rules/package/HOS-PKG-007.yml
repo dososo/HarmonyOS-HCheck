@@ -1,0 +1,68 @@
+id: HOS-PKG-007
+version: 1.0.0
+status: active
+title: 可发布内容包含本地测试地址
+summary: 源码或配置字符串中发现 localhost、127.0.0.1、0.0.0.0 或 [::1] 形式的本地环回 HTTP 地址，可能表示测试环境配置进入发布内容。
+category:
+  technical: package
+  review: app-information
+applies_when:
+  any:
+    - scan.mode == quick
+    - scan.mode == release
+    - scan.mode == submit
+inputs:
+  - project_snapshot
+  - source_text
+detector:
+  type: structural
+  implementation: package.testEndpoint
+  options:
+    schemes:
+      - http
+      - https
+    blocked_hosts:
+      - localhost
+      - 127.0.0.1
+      - 0.0.0.0
+      - "[::1]"
+    extensions:
+      - .ets
+      - .ts
+      - .json5
+    exclude_paths:
+      - node_modules/**
+      - "**/node_modules/**"
+      - oh_modules/**
+      - "**/oh_modules/**"
+      - build/**
+      - "**/build/**"
+severity: HIGH
+default_confidence: PROBABLE
+policy_refs:
+  - source: Huawei 应用审核指南
+    section: 常见审核不通过原因
+    url: https://developer.huawei.com/consumer/cn/doc/App/50104
+    verified_at: "2026-07-11"
+    notes: 官方将“包含测试数据或者提交测试版本”列为常见审核不通过原因。
+  - source: Huawei 应用审核 Checklist
+    section: 上架提审 / 可本地化基础信息
+    url: https://developer.huawei.com/consumer/cn/doc/app/50170
+    verified_at: "2026-07-11"
+    notes: Checklist 要求删除 test、demo、beta 等表明测试版本或数据的词汇；本规则仅检测更确定的本地环回测试地址。
+remediation:
+  summary: 将可发布源码和配置中的本地测试地址替换为正式服务地址；若该地址只用于开发测试，应移入非发布配置或构建时注入。
+  verification: hcheck scan . --rules HOS-PKG-007
+autofix:
+  level: review_required
+  allowed_paths:
+    - "**/*.ets"
+    - "**/*.ts"
+    - "**/*.json5"
+known_false_positives:
+  - 真实产品若故意连接本机代理、设备内服务或离线本地服务，需要按工程根相对路径精确豁免并提供人工说明。
+tags:
+  - 测试地址
+  - 本地环回
+  - 发布内容
+introduced_at: "2026-07-11"

@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hcheck.dev/schemas/account-deletion-stub.schema.json",
+  "title": "HCheck 账号注销本地测试桩合同",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "fixtureId",
+    "flowId",
+    "evidenceKind",
+    "status",
+    "runtimeConfirmed",
+    "redacted",
+    "service",
+    "account",
+    "checks",
+    "evidence",
+    "boundaries"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "fixtureId": {
+      "type": "string",
+      "pattern": "^F[0-9]{3}$"
+    },
+    "flowId": {
+      "const": "account-delete"
+    },
+    "evidenceKind": {
+      "const": "account-deletion-stub-contract"
+    },
+    "status": {
+      "const": "local_contract"
+    },
+    "runtimeConfirmed": {
+      "const": false
+    },
+    "redacted": {
+      "const": true
+    },
+    "service": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "endpoint",
+        "production"
+      ],
+      "properties": {
+        "kind": {
+          "const": "local-recorded-stub"
+        },
+        "endpoint": {
+          "type": "string",
+          "pattern": "^(stub://|http://(127\\.0\\.0\\.1|localhost)(:[0-9]{2,5})?(/[^\\s]*)?)$"
+        },
+        "production": {
+          "const": false
+        }
+      }
+    },
+    "account": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "redacted"
+      ],
+      "properties": {
+        "subject": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_.:-]*$"
+        },
+        "redacted": {
+          "const": true
+        }
+      }
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "status",
+          "summary"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": [
+              "delete-request-accepted",
+              "old-token-rejected",
+              "relogin-rejected",
+              "local-data-cleared"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "passed",
+              "failed",
+              "evidence_incomplete"
+            ]
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "collectedAt",
+        "commands"
+      ],
+      "properties": {
+        "collectedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "commands": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        }
+      }
+    },
+    "boundaries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      }
+    }
+  }
+}

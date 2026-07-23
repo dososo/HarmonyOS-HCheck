@@ -1,0 +1,26 @@
+id: F010
+name: 发布内容包含本地测试地址
+status: structural
+target:
+  platform: harmonyos
+  model: stage
+  api: 不依赖特定 API
+  modules:
+    - entry
+defect:
+  description: 在声明源码目录中保留一个本地环回 HTTP 测试地址。
+  injection: 使用 http://localhost:8080/api 作为唯一故障点，不使用普通 test/demo/beta 词制造误报。
+  safety: 不使用真实凭证、真实用户数据或生产服务。
+expected_findings:
+  - rule_id: HOS-PKG-007
+    minimum_confidence: PROBABLE
+forbidden_findings:
+  - HOS-META-003
+build:
+  required: false
+  profile: release
+runtime:
+  required: false
+  flows: []
+reset: 将本地环回测试地址替换为正式服务地址并重新扫描。
+notes: 该样例只证明结构扫描能发现可发布源码中的本地测试地址，不包含 SDK、签名或构建产物，不可作为 HarmonyOS 工程可编译证明。

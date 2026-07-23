@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0.0",
+  "artifact": {
+    "type": "hap",
+    "sizeBytes": 1024
+  },
+  "entries": [],
+  "modules": [
+    {
+      "name": "entry",
+      "type": "entry",
+      "packageName": "com.hcheck.fixture.bundlepackage",
+      "deviceTypes": ["phone"],
+      "requestPermissions": [],
+      "source": "module.json"
+    }
+  ],
+  "bundleName": "com.hcheck.fixture.bundlepackage",
+  "permissions": [],
+  "debug": {
+    "enabledModules": [],
+    "markerFiles": []
+  },
+  "completeness": "COMPLETE",
+  "issues": []
+}
