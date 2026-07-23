@@ -27,6 +27,7 @@
     "schema:check": "node scripts/validate-schemas.mjs",
     "sbom:check": "node scripts/generate-sbom.mjs --check",
     "package:cli": "node scripts/package-cli.mjs",
+    "hcheck": "node packages/cli/dist/index.js",
     "security:deps": "pnpm audit --prod && pnpm sbom:check",
     "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm docs:check && pnpm schema:check"
   },

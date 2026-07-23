@@ -1,77 +1,86 @@
 # HCheck
 
-[中文](README.md) · [Security](SECURITY.md) · [Contributing](CONTRIBUTING.md) · [License](LICENSE) · [Docs](docs/00-文档导航.md)
+[中文](README.md) · [Docs](docs/00-文档导航.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
 
 > A local-first, evidence-driven CLI for pre-release inspection of HarmonyOS applications.
 
-HCheck connects project configuration, dependencies, package metadata, rules, and verification evidence into reproducible checks. It helps teams find deterministic release risks earlier and keeps remediation evidence auditable.
+Right before release, the most costly misses are often outside business code: undeclared permissions, mismatched versions, a Debug artifact, a leftover test endpoint, or dependencies that disagree with privacy disclosure. HCheck checks deterministic cases locally and returns the location, rule, remediation direction, and reproducible result.
 
-## What it does
+> Core principle: report what can be established; never turn missing evidence into a pass.
 
-- Inspects Stage-model configuration, dependencies, and local APP/HAP/HSP/HAR packages.
-- Runs implemented `quick` rules for metadata placeholders, local test endpoints, minimum permissions, Bundle/version consistency, Debug artifacts, and local SDK disclosure evidence.
-- Produces stable findings with severity, confidence, and applicability; outputs Terminal, JSON, SARIF, JUnit, HTML, and Agent JSON.
-- Uses local, read-only, and redacted defaults. Incomplete evidence and external failures are never reported as a pass.
+## When to use it
 
-## What it does not do
+- Before a handoff or release, to inspect HarmonyOS project configuration, permissions, versions, and dependencies.
+- When you have an APP, HAP, HSP, or HAR and need a read-only view of its metadata, permissions, and Debug markers.
+- When your team needs the same traceable result in the terminal and CI instead of screenshots and verbal confirmation.
+- When a finding needs to remain understandable and reproducible after the first person has fixed it.
 
-- It does not replace HarmonyOS or AppGallery Connect review and does not guarantee approval.
-- It contains no production signing material, user data, production API credentials, real device logs, or real accounts.
-- It does not rely on page scraping, private interfaces, or implicit login as a product contract.
-
-## Quick start
+## Start in three minutes
 
 Requirements: Node.js `24.18.0` and pnpm `10.34.0`.
 
 ```bash
+git clone https://github.com/dososo/HarmonyOS-HCheck.git
+cd HarmonyOS-HCheck
 corepack enable
-corepack install
 pnpm install --frozen-lockfile
-pnpm check
-
 pnpm build
-node packages/cli/dist/index.js doctor fixtures/clean-stage-app --format json
-node packages/cli/dist/index.js scan fixtures/missing-permission --format terminal
-node packages/cli/dist/index.js package inspect <local-hap-or-app-path> --format json
+
+# Run the included clean fixture first; it should report PASS.
+pnpm hcheck scan fixtures/clean-stage-app --format terminal
 ```
 
-All content in `fixtures/` is public, non-production test data. Read the [data-handling guide](docs/11-安全隐私与凭证.md) before inspecting your own project or package.
+Then replace the directory with your own HarmonyOS project. Use the second command for a local package:
 
-## Reproducible real output
+```bash
+pnpm hcheck scan <your-project-directory> --format terminal
+pnpm hcheck package inspect <local-hap-or-app-path> --format terminal
+```
+
+Start with a project copy or a non-production artifact. Never commit production signing material, real user data, or unredacted logs to this repository, an issue, or a report.
+
+## What you get
+
+1. **Project checks** for Stage configuration, `app.json5`, `module.json5`, `build-profile.json5`, and `oh-package` dependencies: placeholders, test endpoints, minimum permissions, Bundle/version consistency, Debug markers, and local SDK disclosure.
+2. **Package checks** that read local APP, HAP, HSP, and HAR metadata, permissions, Debug markers, and parse completeness without writing to them.
+3. **Clear findings** with severity, confidence, applicability, a rule ID, location, and remediation clue.
+4. **Reusable results** in Terminal, JSON, SARIF, JUnit, HTML, and Agent JSON for local use, CI, and later audit.
+
+## Real output example
 
 ![Actual HCheck command output: an expected permission blocker on the left and a clean fixture pass on the right](docs/assets/cli-real-run.png)
 
-The image is a typeset rendering of actual CLI output from this repository's public fixtures: the left command returns `exit 1` with `HOS-PERM-001`, while the right command returns `exit 0` with no findings. It is not a terminal, device, or AGC screenshot. Inspect the [output source](docs/assets/real-run-output.html) or reproduce it locally:
+The image is a rendering of real CLI output from this repository's public fixtures. The missing-permission fixture returns `exit 1` with `HOS-PERM-001`; the clean fixture returns `exit 0`. Reproduce it with:
 
 ```bash
-pnpm build
-node packages/cli/dist/index.js scan fixtures/missing-permission --format terminal --fail-on high --confidence probable
-node packages/cli/dist/index.js scan fixtures/clean-stage-app --format terminal
+pnpm hcheck scan fixtures/missing-permission --format terminal --fail-on high --confidence probable
+pnpm hcheck scan fixtures/clean-stage-app --format terminal
 ```
 
-## Non-production external verification record
+## What it does not do
 
-To preserve evidence boundaries, the following screenshots record an environment action and result from the official Cloud Testing service in a non-production AppGallery Connect project. They are not HCheck CLI scan output and do not imply endorsement by Huawei or AppGallery Connect. Account information is redacted in the images.
+- It does not replace HarmonyOS or AppGallery Connect review and does not guarantee approval or publication.
+- It does not upload source code, perform device write actions by default, or read or distribute production signing material.
+- It does not treat page scraping, reverse-engineered interfaces, or implicit login as a product capability.
+- It never reports unimplemented work, incomplete evidence, or an unavailable external service as a pass.
 
-### Cloud Testing entry and connectivity preflight
+Version `0.6.0` is a development baseline: `quick` scanning and local package inspection are implemented. Device, external-tool, and AGC-related capabilities remain explicit, constrained adapter boundaries; they are not a substitute for a formal release decision.
 
-<p align="center">
-  <img src="docs/assets/external-verification/agc-cloudtest-preflight.png" alt="Cloud Testing entry and connectivity preflight in a non-production AppGallery Connect project, with account information redacted" width="960" />
-</p>
+## FAQ
 
-Before opening Cloud Testing in the non-production project, connectivity was checked and restored only for the specified Huawei Cloud CDN domain, then the official service entry was opened. This documents an explicit external-environment preflight; it includes no source upload, production account, production signing material, or device write action.
+**Will it modify my project?** No. Local checks are read-only by default. The repair path only produces an explicit, auditable dry-run plan.
 
-### Compatibility-test summary
+**Do I need a physical device or an AGC login?** No. Project scanning and local package inspection can run offline. Device and external-service workflows require separate configuration and explicit human approval.
 
-<p align="center">
-  <img src="docs/assets/external-verification/cloudtest-compatibility-summary.png" alt="Non-production compatibility-test summary: 39 test items, 100 percent pass rate, zero failures, and zero warnings" width="1200" />
-</p>
+**Is this an official Huawei tool?** No. It is an independent community project. Confirm any conclusion against the target SDK, device, official documentation, and actual runtime result.
 
-This non-production compatibility-test record shows 39 total test items, a 100% pass rate, zero failed items, and zero warnings. It also records the target as Mate X5, system version 6.1.0.115, and 1080×2504 resolution. It describes this one test record only; it does not generalize to all devices, versions, or future builds.
+## Learn more and contribute
 
-## Contributing and release
-
-HCheck is licensed under the [MIT License](LICENSE). Please read [CONTRIBUTING.md](CONTRIBUTING.md), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md), and [SECURITY.md](SECURITY.md) before participating. The repository is source-open; workspace packages remain `private: true` to prevent accidental npm publishing.
+- [CLI commands, configuration, and exit codes](docs/04-CLI与配置规范.md)
+- [Rules and rule development](docs/05-规则体系与开发规范.md)
+- [Runtime evidence and device boundaries](docs/06-运行时验证与证据.md)
+- [Security and data handling](docs/11-安全隐私与凭证.md)
+- [Contributing](CONTRIBUTING.md) · [Code of Conduct](CODE_OF_CONDUCT.md) · [Security policy](SECURITY.md)
 
 ## About the author
 
@@ -84,4 +93,6 @@ HCheck is independently created and maintained by 爆裂队长NEXT (BLCaptain). 
 
 If this project helps you, please star or share it, or reach out on X.
 
-HarmonyOS, OpenHarmony, ArkUI, Huawei, and related names and trademarks belong to their respective owners. Validate inspection results against the target SDK, device, official documentation, and actual runtime results.
+## License
+
+Released under the [MIT License](LICENSE). HarmonyOS, OpenHarmony, ArkUI, Huawei, and related names and trademarks belong to their respective owners.
